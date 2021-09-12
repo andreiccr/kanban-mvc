@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\CardDeletedEvent;
+use App\Events\CardMovedToAnotherListEvent;
+use App\Events\CardReorderedEvent;
 use App\Models\Listt;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -26,7 +28,25 @@ class ReorderCardsInListtListener
                 }
             }
         }
-        else {
+        else if(get_class($event) == CardMovedToAnotherListEvent::class) {
+            foreach($event->card->listt->cards as $card) {
+                if($card->id == $event->card->id)
+                    continue;
+
+                if($card->position > $event->card->position) {
+                    $card->position--;
+                    $card->save();
+                }
+            }
+
+            foreach(Listt::find($event->targetListt)->cards as $card) {
+                if($card->position >= $event->newPosition) {
+                    $card->position++;
+                    $card->save();
+                }
+            }
+        }
+        else if(get_class($event) == CardReorderedEvent::class) {
             if ($event->card->position > $event->newPosition) {
                 $cardWasMovedUp = true;
             } else {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\CardDeletedEvent;
+use App\Events\CardMovedToAnotherListEvent;
 use App\Events\CardReorderedEvent;
 use App\Models\Card;
 use App\Models\Listt;
@@ -28,33 +29,43 @@ class CardController extends Controller
             "id" => $card->id,
             "title" => "New card",
             "position" => $card->position,
-            "listId" => $listt->id,
+            "listtId" => $listt->id,
             "boardId" => $board->id
         ]);
 
     }
 
-    function update(Request $request, Workboard $board, Listt $listt, Card $card) {
+    function move(Request $request, Workboard $board, Listt $listt, Card $card) {
         $validated = $request->validate([
-            "title" => "nullable|string|max:2000",
-            "position" => "nullable|integer"
+            "position" => "required|integer|numeric",
+            "listtId" => "required|integer|numeric"
         ]);
 
-        if(isset($validated["position"]) && $validated["position"] != null) {
-            $oldPosition = $card->position;
-            $newPosition = $validated["position"];
-            if($newPosition<1) $newPosition = 1;
-            else if($newPosition > $listt->cards->count()) $newPosition = $listt->cards->count();
+        if($validated["listtId"] != $card->listt->id) {
 
-            if ($oldPosition != $newPosition)
-                event(new CardReorderedEvent($card, $newPosition));
+            $targetListt = Listt::find($validated["listtId"]);
+            if($targetListt->workboard->id == $card->listt->workboard->id){
 
-            $card->position = $newPosition;
+                $newPosition = min(max($validated["position"], 1), $targetListt->cards->count()+1);
+
+                event(new CardMovedToAnotherListEvent($card, $newPosition, $validated["listtId"]));
+                $card->listt_id = $validated["listtId"];
+                $card->position = $newPosition;
+
+            } else {
+                return response()->json([
+                    "error" => "Card must be moved to a list belonging to the same board",
+                ], 403);
+            }
+
         }
+        else {
+            $newPosition = min(max($validated["position"], 1), $listt->cards->count());
+            if($newPosition != $card->position){
+                event(new CardReorderedEvent($card, $newPosition));
+                $card->position = $newPosition;
+            }
 
-        if(isset($validated["title"])) {
-            $oldTitle = $card->title;
-            $card->title = $validated["title"];
         }
 
         $card->save();
@@ -63,8 +74,28 @@ class CardController extends Controller
             "id" => $card->id,
             "title" => $card->title,
             "position" => $card->position,
+            "listtId" => $listt->id,
+            "boardId" => $board->id
+        ]);
+
+    }
+
+    function update(Request $request, Workboard $board, Listt $listt, Card $card) {
+        $validated = $request->validate([
+            "title" => "required|string|max:2000",
+        ]);
+
+        $oldTitle = $card->title;
+        $card->title = $validated["title"];
+
+        $card->save();
+
+        return response()->json([
+            "id" => $card->id,
+            "title" => $card->title,
+            "position" => $card->position,
             "old_title" => $oldTitle ?? null,
-            "listId" => $listt->id,
+            "listtId" => $listt->id,
             "boardId" => $board->id
         ]);
 

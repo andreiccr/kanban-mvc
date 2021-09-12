@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\CardDeletedEvent;
+use App\Events\CardMovedToAnotherListEvent;
 use App\Events\CardReorderedEvent;
 use App\Listeners\ReorderCardsInListtListener;
 use Illuminate\Auth\Events\Registered;
@@ -25,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
             ReorderCardsInListtListener::class,
         ],
         CardDeletedEvent::class => [
+            ReorderCardsInListtListener::class,
+        ],
+        CardMovedToAnotherListEvent::class => [
             ReorderCardsInListtListener::class,
         ],
     ];

@@ -1,23 +1,43 @@
 $( function() {
     $( ".sortable" ).sortable({
+        connectWith: ".kanban-cards",
         update: function(event, ui) {
 
-            const listtId = ui.item.data("listt-id");
-            const cards = document.querySelectorAll(".kanban-card[data-listt-id='"+listtId+"']");
+            const currentListtId = ui.item.data("listt-id");
+            const targetListtId = ui.item.parent().data("listt-id");
 
-            for(let i=0; i<cards.length; i++) {
-                if(cards[i].dataset.id == ui.item.data("id")) {
-                    reorderCard(ui.item.parent().data("board-id"), listtId, ui.item.data("id"), i+1);
+            const targetListtCards = document.querySelectorAll(".kanban-card[data-listt-id='"+targetListtId+"']");
+
+            for(let i=0; i<targetListtCards.length; i++) {
+                if(targetListtCards[i].dataset.id == ui.item.data("id")) {
+                    reorderCard(ui.item.parent().data("board-id"), currentListtId, ui.item.data("id"), i+1, targetListtId);
+                    break;
+                }
+            }
+        },
+
+        receive: function(event, ui) {
+
+            const currentListtId = ui.item.data("listt-id");
+            const targetListtId = ui.item.parent().data("listt-id");
+
+            const targetListtCards = document.querySelectorAll(".kanban-cards[data-listt-id='"+targetListtId+"'] .kanban-card");
+
+            ui.item.attr("data-listt-id", targetListtId);
+
+            for(let i=0; i<targetListtCards.length; i++) {
+                if(targetListtCards[i].dataset.id == ui.item.data("id")) {
+                    reorderCard(ui.item.parent().data("board-id"), currentListtId, ui.item.data("id"), i+1, targetListtId);
                     break;
                 }
             }
         }
-    });
-    $( ".sortable" ).disableSelection();
+    }).disableSelection();
 } );
 
-window.reorderCard = function(boardId, listtId, cardId, newPosition) {
-    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId, {"position" : newPosition} ).then(response => {
+window.reorderCard = function(boardId, listtId, cardId, newPosition, targetListt) {
+
+    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId + "/move", {"position" : newPosition , "listtId" : targetListt} ).then(response => {
 
     }).catch(err => {
 
@@ -38,7 +58,7 @@ window.createCard = function(boardId, listtId) {
 
         newCard.dataset.id = response.data["id"];
         newCard.innerText = response.data["title"];
-        newCard.dataset.listtId = response.data["listId"];
+        newCard.dataset.listtId = response.data["listtId"];
 
         newCard.addEventListener("click", e => {
             editCardModal.dataset.cardId = e.currentTarget.dataset.id;

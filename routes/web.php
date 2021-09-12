@@ -30,4 +30,5 @@ Route::delete('/b/{board}', [App\Http\Controllers\WorkboardController::class, 'd
 
 Route::post('/b/{board}/l/{listt}/c', [App\Http\Controllers\CardController::class, 'create'])->name('card.create');
 Route::patch('/b/{board}/l/{listt}/c/{card}', [App\Http\Controllers\CardController::class, 'update'])->name('card.update');
+Route::patch('/b/{board}/l/{listt}/c/{card}/move', [App\Http\Controllers\CardController::class, 'move'])->name('card.move');
 Route::delete('/b/{board}/l/{listt}/c/{card}', [App\Http\Controllers\CardController::class, 'destroy'])->name('card.destroy');

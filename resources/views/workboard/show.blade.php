@@ -22,7 +22,7 @@
                         </div>
                     </div>
 
-                    <div class="kanban-cards sortable" data-board-id="{{ $board->id }}" data-listt-id="{{ $listt->id }}">
+                    <div class="kanban-cards sortable py-1" data-board-id="{{ $board->id }}" data-listt-id="{{ $listt->id }}">
                     @foreach($listt->cards as $card)
                         <div class="kanban-card kanban-card-gray" data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" data-toggle="modal" data-target="#edit-card-modal">{{ $card->title }}</div>
                     @endforeach
