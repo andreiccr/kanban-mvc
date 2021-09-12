@@ -4,18 +4,18 @@
 <div class="container">
     <div class="row">
         <div class="d-flex align-items-baseline">
-            <h4 class="p-2">{{ $board->name }}</h4>
+            <h4 class="m-1" style="border: 1px solid #3490dc; border-radius: 0.25rem; color: #3490dc; font-size: large; padding: 0.6rem !important;">{{ $board->name }}</h4>
             <button class="btn btn-outline-primary m-1" data-toggle="modal" data-target="#edit-workboard-modal" style="font-size: large"><i class="bi bi-pencil-square"></i></button>
             <button class="btn btn-outline-primary m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large"><i class="bi bi-trash"></i></button>
         </div>
     </div>
     <hr>
-    <div class="d-flex align-items-start" >
+    <div class="d-flex align-items-start" style="margin-left: -15px;">
         @foreach($board->listts as $listt)
-            <div class="d-flex ml-1 mr-1" style="width:300px">
+            <div class="d-flex mx-1" style="width:300px">
                 <div class="card p-2" style="cursor: pointer; min-width:300px;">
                     <div class="d-flex align-items-baseline justify-content-between">
-                        <div class="font-weight-bold pl-2">{{ $listt->name }}</div>
+                        <div class="font-weight-bold ml-3" style="color: #0b2133;">{{ $listt->name }}</div>
                         <div>
                             <a class="btn" href="{{ route("listt.edit", ["board" => $board->id, "listt" => $listt->id] ) }}"><i class="bi bi-pencil"></i></a>
                             <button class="btn" onclick="deleteListt({{$board->id}}, {{ $listt->id }})"><i class="bi bi-trash"></i></button>
