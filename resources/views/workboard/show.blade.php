@@ -24,7 +24,12 @@
 
                     <div class="kanban-cards sortable py-1" data-board-id="{{ $board->id }}" data-listt-id="{{ $listt->id }}">
                     @foreach($listt->cards as $card)
-                        <div class="kanban-card kanban-card-gray" data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" data-toggle="modal" data-target="#edit-card-modal">{{ $card->title }}</div>
+                        <div class="kanban-card kanban-card-gray" data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" data-toggle="modal" data-target="#edit-card-modal">
+                            <div>{{ $card->title }}</div>
+                            @if($card->details)
+                                <i class="bi bi-justify-left" style="color:#1a202c; font-size: medium"></i>
+                            @endif
+                        </div>
                     @endforeach
                     </div>
 
@@ -52,12 +57,16 @@
                 </button>
                 <div class="form-group">
                     <span class="text-danger modal-error"></span>
-                    <input type="text" placeholder="Card Title" class="form-control" onchange="_editCard({{$board->id}})" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
+                    <label for="card-title" style="font-weight: 100; font-size: small; color: #777; margin-left: 0.25rem; margin-bottom: 0 !important;">Card Title</label>
+                    <input type="text" placeholder="Card Title" class="form-control p-1" onchange="_editCard({{$board->id}})" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
                 </div>
-                <div class="row justify-content-end">
-                    <div class="d-flex flex-column m-3">
-                        <span class="p-1" style="color: #777777; text-align: center">Card actions</span>
-                        <button class="btn btn-outline-primary" data-dismiss="modal" onclick="_deleteCard({{$board->id}})" ><i class="bi bi-trash"></i> Delete Card</button>
+                <div class="row justify-content-between">
+                    <div class="col-md-8">
+                        <textarea class="w-100 p-2" onchange="_editCard({{$board->id}})" id="card-details" name="card-details" placeholder="Add details to this card..." style="border: none; border-radius: 0.5rem; background: #fafafa"></textarea>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column">
+                        <span class="p-1" style="color: #777777; text-align: center">Card Actions</span>
+                        <button class="btn btn-outline-primary" data-dismiss="modal" onclick="_deleteCard({{$board->id}})" ><i class="bi bi-trash"></i> Delete</button>
                     </div>
                 </div>
             </div>
@@ -75,7 +84,12 @@
             cards.item(i).addEventListener("click", e => {
                 editCardModal.dataset.cardId = e.currentTarget.dataset.id;
                 editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
-                document.getElementById("card-title").value = e.currentTarget.innerText;
+
+                axios.get("/b/" + {{$board->id}} + "/l/" + e.currentTarget.dataset.listtId + "/c/" + e.currentTarget.dataset.id ).then(resp => {
+                    document.getElementById("card-title").value = resp.data["title"];
+                    document.getElementById("card-details").value = resp.data["details"];
+                })
+
             });
         }
     }

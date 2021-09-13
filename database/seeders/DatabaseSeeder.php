@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(2)
-            ->has(Workboard::factory(3)
+        User::factory()
+            ->has(Workboard::factory()
                 ->has(Listt::factory(3)
-                    ->has(Card::factory(6))
+                    ->has(Card::factory(7))
                 )
             )
             ->create();

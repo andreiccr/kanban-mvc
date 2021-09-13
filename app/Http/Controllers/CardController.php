@@ -12,10 +12,20 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
-    //
+    //TODO: Improve the json response
 
     function __construct() {
         $this->middleware("auth");
+    }
+
+    function get(Workboard $board, Listt $listt, Card $card) {
+
+        return response()->json([
+            "id" => $card->id,
+            "title" => $card->title,
+            "details" => $card->details,
+
+        ]);
     }
 
     function create(Workboard $board, Listt $listt) {
@@ -82,12 +92,13 @@ class CardController extends Controller
 
     function update(Request $request, Workboard $board, Listt $listt, Card $card) {
         $validated = $request->validate([
-            "title" => "required|string|max:2000",
+            "title" => "required|string|max:1000",
+            "details" => "nullable|string|max:3500"
         ]);
 
         $oldTitle = $card->title;
         $card->title = $validated["title"];
-
+        $card->details = $validated["details"];
         $card->save();
 
         return response()->json([

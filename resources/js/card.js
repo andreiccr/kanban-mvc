@@ -75,8 +75,9 @@ window.createCard = function(boardId, listtId) {
 
 window.editCard = function(boardId, listtId, cardId) {
     const cardTitle = document.getElementById("card-title").value;
+    const cardDetails = document.getElementById("card-details").value;
 
-    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId, {"title" : cardTitle} ).then(response => {
+    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId, {"title" : cardTitle , "details" : cardDetails} ).then(response => {
         let card = document.querySelector(".kanban-card[data-id='"+cardId+"']");
         card.innerText = response.data["title"];
     }).catch(err => {

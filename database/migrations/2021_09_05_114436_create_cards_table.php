@@ -20,6 +20,8 @@ class CreateCardsTable extends Migration
             $table->string("title");
             $table->unsignedBigInteger("listt_id")->index("listt_id");
             $table->integer("position")->nullable(false);
+
+            $table->string("details")->nullable();
         });
     }
 
