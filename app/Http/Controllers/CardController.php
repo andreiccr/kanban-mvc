@@ -8,6 +8,8 @@ use App\Events\CardReorderedEvent;
 use App\Models\Card;
 use App\Models\Listt;
 use App\Models\Workboard;
+use DateTime;
+use DateTimeInterface;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -24,6 +26,8 @@ class CardController extends Controller
             "id" => $card->id,
             "title" => $card->title,
             "details" => $card->details,
+            "due_date" => $card->due_date == null ? null : date(DateTimeInterface::ISO8601, strtotime($card->due_date)),
+            "done_date" => $card->done_date == null ? null : date(DateTimeInterface::ISO8601, strtotime($card->done_date)),
 
         ]);
     }
@@ -93,22 +97,31 @@ class CardController extends Controller
     function update(Request $request, Workboard $board, Listt $listt, Card $card) {
         $validated = $request->validate([
             "title" => "required|string|max:1000",
-            "details" => "nullable|string|max:3500"
+            "details" => "nullable|string|max:3500",
+            "due_date" => "nullable|date",
+            "marked_as_completed" => "nullable"
         ]);
+
+        if(strtotime($validated['due_date']) >= strtotime("now") || (strtotime($validated['due_date']) < strtotime("now") && $validated["marked_as_completed"] != null)) {
+            $card->due_date = $validated["due_date"] == null ? null : date("Y-m-d H:i:s", strtotime($validated["due_date"]));
+            $card->done_date = null;
+        }
+
+        if($validated["marked_as_completed"] != null) {
+            if($card->done_date == null) {
+                $card->done_date = date("Y-m-d H:i:s", strtotime("now"));
+            }
+        } else {
+            $card->done_date = null;
+        }
 
         $oldTitle = $card->title;
         $card->title = $validated["title"];
         $card->details = $validated["details"];
+
         $card->save();
 
-        return response()->json([
-            "id" => $card->id,
-            "title" => $card->title,
-            "position" => $card->position,
-            "old_title" => $oldTitle ?? null,
-            "listtId" => $listt->id,
-            "boardId" => $board->id
-        ]);
+        return $this->get($board, $listt, $card);
 
     }
 

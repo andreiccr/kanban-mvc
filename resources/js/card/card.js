@@ -33,7 +33,50 @@ $( function() {
             }
         }
     }).disableSelection();
+
+
 } );
+
+window.displayCardInfoInModal = function(card) {
+    document.getElementById("card-title").value = card["title"];
+    document.getElementById("card-details").value = card["details"];
+
+    const dueDate = document.getElementById("card-due-date");
+    const doneDate = document.getElementById("card-done-date");
+
+    const dueDateContainer = document.getElementById("card-due-date-container");
+    const doneDateContainer = document.getElementById("card-done-date-container");
+
+    if(card["due_date"] !== null && card["due_date"] !== undefined) {
+
+        dueDate.dataset.storedDate = (new Date(card["due_date"])).toUTCString();
+        dueDate.innerText = makeDueDateString(card["due_date"]);
+
+        if(card["done_date"] !== null && card["done_date"] !== undefined) {
+            doneDateContainer.hidden = false;
+            dueDateContainer.hidden = true;
+            if(Date.parse(card["done_date"]) > Date.parse(card["due_date"])) {
+                doneDateContainer.style.color = "red";
+                doneDate.innerHTML = makeDueDateString(card["done_date"]) + " <span style='color: red'>PAST DUE</span>";
+            } else {
+                doneDateContainer.style.color = "#3490dc";
+                doneDate.innerText = makeDueDateString(card["done_date"]);
+            }
+
+        } else {
+            dueDateContainer.hidden = false;
+            doneDateContainer.hidden = true;
+            doneDate.innerText = "";
+        }
+
+    } else {
+        dueDateContainer.hidden = true;
+        doneDateContainer.hidden = true;
+        dueDate.innerText = "";
+        dueDate.dataset.storedDate = "";
+        doneDate.innerText = "";
+    }
+}
 
 window.reorderCard = function(boardId, listtId, cardId, newPosition, targetListt) {
 
@@ -43,7 +86,6 @@ window.reorderCard = function(boardId, listtId, cardId, newPosition, targetListt
 
     });
 }
-
 
 window.createCard = function(boardId, listtId) {
     const cardContainer = document.querySelector(".kanban-cards[data-listt-id='"+listtId+"'][data-board-id='"+boardId+"']")
@@ -63,7 +105,10 @@ window.createCard = function(boardId, listtId) {
         newCard.addEventListener("click", e => {
             editCardModal.dataset.cardId = e.currentTarget.dataset.id;
             editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
-            document.getElementById("card-title").value = e.currentTarget.innerText;
+
+            axios.get("/b/" + 1 + "/l/" + e.currentTarget.dataset.listtId + "/c/" + e.currentTarget.dataset.id ).then(resp => {
+                displayCardInfoInModal(resp.data);
+            })
         });
 
         cardContainer.appendChild(newCard);
@@ -76,11 +121,26 @@ window.createCard = function(boardId, listtId) {
 window.editCard = function(boardId, listtId, cardId) {
     const cardTitle = document.getElementById("card-title").value;
     const cardDetails = document.getElementById("card-details").value;
+    const cardDueDate = document.getElementById("card-due-date").dataset.storedDate;
 
-    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId, {"title" : cardTitle , "details" : cardDetails} ).then(response => {
-        let card = document.querySelector(".kanban-card[data-id='"+cardId+"']");
-        card.innerText = response.data["title"];
-    }).catch(err => {
+    const cardMarkedAsCompleted = document.getElementById("card-due-date-check").getAttribute("completed");
+
+    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId,
+        {
+            "title" : cardTitle ,
+            "details" : cardDetails ,
+            "due_date" : cardDueDate.length>0 ? cardDueDate : null ,
+            "marked_as_completed" : cardMarkedAsCompleted ,
+        }).then(response => {
+
+            //Update card name in the list
+            const card = document.querySelector(".kanban-card[data-id='"+cardId+"']");
+            card.innerText = response.data["title"];
+
+            //Update modal info
+            displayCardInfoInModal(response.data);
+
+        }).catch(err => {
 
     });
 }

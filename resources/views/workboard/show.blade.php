@@ -26,8 +26,15 @@
                     @foreach($listt->cards as $card)
                         <div class="kanban-card kanban-card-gray" data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" data-toggle="modal" data-target="#edit-card-modal">
                             <div>{{ $card->title }}</div>
+
                             @if($card->details)
-                                <i class="bi bi-justify-left" style="color:#1a202c; font-size: medium"></i>
+                                <i class="bi bi-justify-left m-1" style="color:#4e535e; font-size: medium"></i>
+                            @endif
+
+                            @if($card->done_date)
+                                <div class="d-inline-block m-1"><i class="bi bi-calendar-check" style="color:#188c26; font-size: medium"></i><span class="p-1" style="font-size: small; color:#188c26; ">{{date("d M", strtotime($card->done_date))}}</span></div>
+                            @elseif($card->due_date)
+                                <div class="d-inline-block m-1"><i class="bi bi-calendar" style="color:#4e535e; font-size: medium"></i><span class="p-1" style="font-size: small; color:#1a202c;">{{date("d M", strtotime($card->due_date))}}</span></div>
                             @endif
                         </div>
                     @endforeach
@@ -58,13 +65,29 @@
                 <div class="form-group">
                     <span class="text-danger modal-error"></span>
                     <label for="card-title" style="font-weight: 100; font-size: small; color: #777; margin-left: 0.25rem; margin-bottom: 0 !important;">Card Title</label>
-                    <input type="text" placeholder="Card Title" class="form-control p-1" onchange="_editCard({{$board->id}})" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
+                    <input type="text" placeholder="Card Title" class="form-control p-1 mb-2" onchange="_editCard({{$board->id}})" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
+
+                    <div style="margin-left: 0.25rem; display:flex;" class="align-items-baseline" id="card-due-date-container">
+                        <i class="bi bi-calendar"></i><span class="px-1" style="color: #777"> Due date</span>
+                        <span class="p-1" id="card-due-date" data-stored-date="" data-toggle="modal" data-target="#date-modal" style="color: #495057; background: #fafafa; cursor:pointer;">13 September 2021</span>
+
+                        <button class="btn btn-outline-primary px-2 py-1 ml-2" id="card-due-date-check" style="font-size: small; border:none;" onclick="markAsComplete(true)"><i class="bi bi-calendar-check"></i></button>
+                        <button class="btn btn-outline-danger px-2 py-1 ml-1" style="font-size: small; border:none;" onclick="removeDueDate()"><i class="bi bi-calendar-minus"></i></button>
+                    </div>
+                    <div style="color: #3490dc; margin-left: 0.25rem;" id="card-done-date-container">
+                        <i class="bi bi-calendar-check"></i> Marked as completed on
+                        <span class="p-1" id="card-done-date" onclick="markAsComplete(false)" style="color: #495057; background: #fafafa; cursor:pointer;">13 September 2021</span>
+                    </div>
                 </div>
+
                 <div class="row justify-content-between">
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                         <textarea class="w-100 p-2" onchange="_editCard({{$board->id}})" id="card-details" name="card-details" placeholder="Add details to this card..." style="border: none; border-radius: 0.5rem; background: #fafafa"></textarea>
                     </div>
-                    <div class="col-md-3 d-flex flex-column">
+                    <div class="col-lg-3 d-flex flex-column">
+                        <span class="p-1" style="color: #777777; text-align: center">Settings</span>
+                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#date-modal" ><i class="bi bi-calendar-plus"></i> Due Date</button>
+                        <hr>
                         <span class="p-1" style="color: #777777; text-align: center">Card Actions</span>
                         <button class="btn btn-outline-primary" data-dismiss="modal" onclick="_deleteCard({{$board->id}})" ><i class="bi bi-trash"></i> Delete</button>
                     </div>
@@ -74,7 +97,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="date-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h6><i class="bi bi-calendar"></i> Due date</h6>
+                <hr>
+                <span id="date-modal-error" class="text-danger"></span>
+                <div class="d-flex justify-content-between">
+
+                    <input class="p-2 my-2" id="due-date-input-date" type="date" min="{{ date("Y-m-d") }}" value="{{ date("Y-m-d") }}">
+                    <input class="p-2 my-2" id="due-date-input-time" type="time" value="00:00">
+                </div>
+                <button class="btn btn-primary w-100 my-2" onclick="setDueDate()">Set Due Date</button>
+                <button class="btn btn-secondary w-100 my-2" data-dismiss="modal" onclick="removeDueDate()">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+
     const editCardModal = document.getElementById("edit-card-modal");
     if(editCardModal != null) {
         const cards = document.getElementsByClassName("kanban-card");
@@ -86,10 +129,8 @@
                 editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
 
                 axios.get("/b/" + {{$board->id}} + "/l/" + e.currentTarget.dataset.listtId + "/c/" + e.currentTarget.dataset.id ).then(resp => {
-                    document.getElementById("card-title").value = resp.data["title"];
-                    document.getElementById("card-details").value = resp.data["details"];
+                    displayCardInfoInModal(resp.data);
                 })
-
             });
         }
     }

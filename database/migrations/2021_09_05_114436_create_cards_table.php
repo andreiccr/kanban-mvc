@@ -22,6 +22,9 @@ class CreateCardsTable extends Migration
             $table->integer("position")->nullable(false);
 
             $table->string("details")->nullable();
+            $table->dateTime("due_date")->nullable();
+            $table->dateTime("done_date")->nullable();
+
         });
     }
 
