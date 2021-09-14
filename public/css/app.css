@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);
+@import url(https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;700&display=swap);
 @charset "UTF-8";
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
@@ -10008,12 +10008,26 @@ h3 {
 }
 
 .kanban-card-gray {
-  box-shadow: 0px 1px 2px #aaa;
+  border: 1px solid #bbb;
+  border-radius: 0.25rem;
   background: #f8fafc;
+}
+
+.kanban-card-gray:hover {
+  background: #eeeff1;
 }
 
 .kanban-card-blue {
   box-shadow: 0px 2px 1px #014c797a;
   background: #3490dc;
   color: white;
+}
+
+.btn-create-card {
+  text-align: left;
+}
+
+.btn-create-card:hover {
+  background: #f4f4f4;
+  color: black;
 }

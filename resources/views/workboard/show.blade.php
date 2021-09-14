@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="d-flex align-items-baseline">
-            <h4 class="m-1" style="border: 1px solid #3490dc; border-radius: 0.25rem; color: #3490dc; font-size: large; padding: 0.6rem !important;">{{ $board->name }}</h4>
+            <h4 class="m-1" style="font-weight: bold; border: 1px solid #3490dc; border-radius: 0.25rem; color: #3490dc; font-size: large; padding: 0.6rem !important;">{{ $board->name }}</h4>
             <button class="btn btn-outline-primary m-1" data-toggle="modal" data-target="#edit-workboard-modal" style="font-size: large"><i class="bi bi-pencil-square"></i></button>
             <button class="btn btn-outline-primary m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large"><i class="bi bi-trash"></i></button>
         </div>
@@ -40,15 +40,15 @@
                     @endforeach
                     </div>
 
-                    <div class="btn p-1 m-1" style="text-align: left" onclick="createCard({{$board->id}},{{$listt->id}})"><i class="bi bi-plus-lg"></i> Add card</div>
+                    <div class="btn btn-create-card px-2 py-1 m-1" style="text-align: left" onclick="createCard({{$board->id}},{{$listt->id}})"><i class="bi bi-plus-lg"></i> Add card</div>
                 </div>
             </div>
         @endforeach
 
-        <div class="d-flex ml-1 mr-1" style="width:300px">
-            <div class="card p-2" style="cursor: pointer; min-width:300px;">
-                <div class="d-flex align-items-baseline justify-content-between">
-                    <button class="btn w-100" data-toggle="modal" data-target="#new-listt-modal" style="text-align: left"><i class="bi bi-plus-lg"></i> Add list</button>
+        <div class="d-flex mx-1 " style="width:300px">
+            <div style="min-width:300px;">
+                <div class="d-flex">
+                    <button class="btn btn-outline-primary w-100" data-toggle="modal" data-target="#new-listt-modal" style="text-align: left"><i class="bi bi-plus-lg"></i> Add list</button>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
                 </button>
                 <div class="form-group">
                     <span class="text-danger modal-error"></span>
-                    <label for="card-title" style="font-weight: 100; font-size: small; color: #777; margin-left: 0.25rem; margin-bottom: 0 !important;">Card Title</label>
+                    <label for="card-title" style="font-weight: 300; font-size: small; color: #777; margin-left: 0.25rem; margin-bottom: 0 !important;">Card Title</label>
                     <input type="text" placeholder="Card Title" class="form-control p-1 mb-2" onchange="_editCard({{$board->id}})" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
 
                     <div style="margin-left: 0.25rem; display:flex;" class="align-items-baseline" id="card-due-date-container">
