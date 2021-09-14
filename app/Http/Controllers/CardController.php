@@ -102,7 +102,7 @@ class CardController extends Controller
             "marked_as_completed" => "nullable"
         ]);
 
-        if(strtotime($validated['due_date']) >= strtotime("now") || (strtotime($validated['due_date']) < strtotime("now") && $validated["marked_as_completed"] != null)) {
+        if(strtotime($validated['due_date']) >= strtotime("now") || $validated["due_date"] == null || (strtotime($validated['due_date']) < strtotime("now") && $validated["marked_as_completed"] != null)) {
             $card->due_date = $validated["due_date"] == null ? null : date("Y-m-d H:i:s", strtotime($validated["due_date"]));
             $card->done_date = null;
         }
