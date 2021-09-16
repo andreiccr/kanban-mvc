@@ -58,7 +58,10 @@
 <div class="modal fade" id="edit-card-modal" tabindex="-1" role="dialog" aria-labelledby="editCardModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-body">
+            <div class="spinner-border m-4 text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="modal-body" hidden>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -119,6 +122,9 @@
 <script>
 
     const editCardModal = document.getElementById("edit-card-modal");
+    const modalSpinner = document.querySelector("#edit-card-modal .spinner-border");
+    const modalContent = document.querySelector("#edit-card-modal .modal-body");
+
     if(editCardModal != null) {
         const cards = document.getElementsByClassName("kanban-card");
 
@@ -128,8 +134,12 @@
                 editCardModal.dataset.cardId = e.currentTarget.dataset.id;
                 editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
 
+                modalSpinner.hidden = false;
+                modalContent.hidden = true;
                 axios.get("/c/" + e.currentTarget.dataset.id ).then(resp => {
                     displayCardInfoInModal(resp.data);
+                    modalSpinner.hidden = true;
+                    modalContent.hidden = false;
                 })
             });
         }
