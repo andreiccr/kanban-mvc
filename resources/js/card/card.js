@@ -132,8 +132,27 @@ window.editCard = function(cardId) {
         }).then(response => {
 
             //Update card name in the list
-            const card = document.querySelector(".kanban-card[data-id='"+cardId+"']");
-            card.innerText = response.data["title"];
+            const listedCard = document.querySelector(".kanban-card[data-id='"+cardId+"']")
+            let listedCardTitle = document.createElement("div");
+            listedCardTitle.innerText = response.data["title"];
+
+            let listedCardIcons = document.createElement("div");
+
+            if(response.data['details'] !== null)
+                listedCardIcons.innerHTML = "<i class=\"bi bi-justify-left m-1\" style=\"color:#4e535e; font-size: medium\"></i>";
+
+            if(response.data['due_date'] !== null) {
+                const shortDateStr = makeShortDueDateString(response.data['due_date']);
+                if(response.data['done_date'] !== null) {
+                    listedCardIcons.innerHTML += " <div class=\"d-inline-block m-1\"><i class=\"bi bi-calendar-check\" style=\"color:#188c26; font-size: medium\"></i><span class=\"p-1\" style=\"font-size: small; color:#188c26; \">" + shortDateStr + "</span></div>";
+                } else {
+                    listedCardIcons.innerHTML += " <div class=\"d-inline-block m-1\"><i class=\"bi bi-calendar\" style=\"color:#4e535e; font-size: medium\"></i><span class=\"p-1\" style=\"font-size: small; color:#1a202c;\">" + shortDateStr + "</span></div>";
+                }
+            }
+
+            listedCard.innerHTML = "";
+            listedCard.appendChild(listedCardTitle);
+            listedCard.appendChild(listedCardIcons);
 
             //Update modal info
             displayCardInfoInModal(response.data);

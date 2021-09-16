@@ -32,6 +32,16 @@ window.makeDueDateString = function(d) {
     return dateStr;
 }
 
+window.makeShortDueDateString = function(d) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let dateStr;
+
+    let dateObj = new Date(d);
+    dateStr = dateObj.getDate() + " " + months[dateObj.getMonth()];
+
+    return dateStr;
+}
+
 window.setDueDate = function() {
 
     if(validateDateTimeInput() === false) {
