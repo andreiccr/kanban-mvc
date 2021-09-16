@@ -3,14 +3,13 @@ $( function() {
         connectWith: ".kanban-cards",
         update: function(event, ui) {
 
-            const currentListtId = ui.item.data("listt-id");
             const targetListtId = ui.item.parent().data("listt-id");
 
             const targetListtCards = document.querySelectorAll(".kanban-card[data-listt-id='"+targetListtId+"']");
 
             for(let i=0; i<targetListtCards.length; i++) {
                 if(targetListtCards[i].dataset.id == ui.item.data("id")) {
-                    reorderCard(ui.item.parent().data("board-id"), currentListtId, ui.item.data("id"), i+1, targetListtId);
+                    reorderCard(ui.item.data("id"), i+1, targetListtId);
                     break;
                 }
             }
@@ -18,7 +17,6 @@ $( function() {
 
         receive: function(event, ui) {
 
-            const currentListtId = ui.item.data("listt-id");
             const targetListtId = ui.item.parent().data("listt-id");
 
             const targetListtCards = document.querySelectorAll(".kanban-cards[data-listt-id='"+targetListtId+"'] .kanban-card");
@@ -27,7 +25,7 @@ $( function() {
 
             for(let i=0; i<targetListtCards.length; i++) {
                 if(targetListtCards[i].dataset.id == ui.item.data("id")) {
-                    reorderCard(ui.item.parent().data("board-id"), currentListtId, ui.item.data("id"), i+1, targetListtId);
+                    reorderCard(ui.item.data("id"), i+1, targetListtId);
                     break;
                 }
             }
@@ -78,19 +76,19 @@ window.displayCardInfoInModal = function(card) {
     }
 }
 
-window.reorderCard = function(boardId, listtId, cardId, newPosition, targetListt) {
+window.reorderCard = function(cardId, newPosition, targetListt) {
 
-    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId + "/move", {"position" : newPosition , "listtId" : targetListt} ).then(response => {
+    axios.patch("/c/" + cardId + "/move", {"position" : newPosition , "listtId" : targetListt} ).then(response => {
 
     }).catch(err => {
 
     });
 }
 
-window.createCard = function(boardId, listtId) {
-    const cardContainer = document.querySelector(".kanban-cards[data-listt-id='"+listtId+"'][data-board-id='"+boardId+"']")
+window.createCard = function(listtId) {
+    const cardContainer = document.querySelector(".kanban-cards[data-listt-id='"+listtId+"']")
 
-    axios.post("/b/" + boardId + "/l/" + listtId + "/c").then(response => {
+    axios.post("/l/" + listtId + "/c").then(response => {
         const newCard = document.createElement("div");
         newCard.classList.add("kanban-card");
         newCard.classList.add("kanban-card-gray");
@@ -106,7 +104,7 @@ window.createCard = function(boardId, listtId) {
             editCardModal.dataset.cardId = e.currentTarget.dataset.id;
             editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
 
-            axios.get("/b/" + 1 + "/l/" + e.currentTarget.dataset.listtId + "/c/" + e.currentTarget.dataset.id ).then(resp => {
+            axios.get("/l/" + e.currentTarget.dataset.listtId + "/c/" + e.currentTarget.dataset.id ).then(resp => {
                 displayCardInfoInModal(resp.data);
             })
         });
@@ -118,14 +116,14 @@ window.createCard = function(boardId, listtId) {
 }
 
 
-window.editCard = function(boardId, listtId, cardId) {
+window.editCard = function(cardId) {
     const cardTitle = document.getElementById("card-title").value;
     const cardDetails = document.getElementById("card-details").value;
     const cardDueDate = document.getElementById("card-due-date").dataset.storedDate;
 
     const cardMarkedAsCompleted = document.getElementById("card-due-date-check").getAttribute("completed");
 
-    axios.patch("/b/" + boardId + "/l/" + listtId + "/c/" + cardId,
+    axios.patch("/c/" + cardId,
         {
             "title" : cardTitle ,
             "details" : cardDetails ,
@@ -145,8 +143,8 @@ window.editCard = function(boardId, listtId, cardId) {
     });
 }
 
-window.deleteCard = function(boardId, listtId, cardId) {
-    axios.delete("/b/" + boardId + "/l/" + listtId + "/c/" + cardId).then(response => {
+window.deleteCard = function(cardId) {
+    axios.delete("/c/" + cardId).then(response => {
         let card = document.querySelector(".kanban-card[data-id='"+cardId+"']");
         card.remove();
     }).catch(err => {

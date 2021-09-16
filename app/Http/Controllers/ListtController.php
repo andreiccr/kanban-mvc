@@ -26,7 +26,7 @@ class ListtController extends Controller
         return response("OK", 200);
     }
 
-    function update(Request $request, Workboard $board, Listt $listt) {
+    function update(Request $request, Listt $listt) {
         $validated = $request->validate([
             "name" => "required|string|max:500"
         ]);
@@ -35,17 +35,17 @@ class ListtController extends Controller
         $listt->save();
 
         //return response("OK", 200);
-        return redirect("/b/" . $board->id);
+        return redirect("/b/" . $listt->workboard->id);
     }
 
-    function destroy(Workboard $board, Listt $listt) {
+    function destroy(Listt $listt) {
 
         $listt->delete();
 
         return response("OK", 200);
     }
 
-    function edit(Workboard $board, Listt $listt) {
-        return view("listt.edit", compact('board', 'listt'));
+    function edit(Listt $listt) {
+        return view("listt.edit", compact('listt'));
     }
 }

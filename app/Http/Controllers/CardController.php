@@ -20,7 +20,7 @@ class CardController extends Controller
         $this->middleware("auth");
     }
 
-    function get(Workboard $board, Listt $listt, Card $card) {
+    function get(Card $card) {
 
         return response()->json([
             "id" => $card->id,
@@ -32,7 +32,7 @@ class CardController extends Controller
         ]);
     }
 
-    function create(Workboard $board, Listt $listt) {
+    function create(Listt $listt) {
 
         $card = $listt->cards()->create([
             "title" => "New card",
@@ -44,12 +44,11 @@ class CardController extends Controller
             "title" => "New card",
             "position" => $card->position,
             "listtId" => $listt->id,
-            "boardId" => $board->id
         ]);
 
     }
 
-    function move(Request $request, Workboard $board, Listt $listt, Card $card) {
+    function move(Request $request, Card $card) {
         $validated = $request->validate([
             "position" => "required|integer|numeric",
             "listtId" => "required|integer|numeric"
@@ -74,7 +73,7 @@ class CardController extends Controller
 
         }
         else {
-            $newPosition = min(max($validated["position"], 1), $listt->cards->count());
+            $newPosition = min(max($validated["position"], 1), $card->listt->cards->count());
             if($newPosition != $card->position){
                 event(new CardReorderedEvent($card, $newPosition));
                 $card->position = $newPosition;
@@ -88,13 +87,11 @@ class CardController extends Controller
             "id" => $card->id,
             "title" => $card->title,
             "position" => $card->position,
-            "listtId" => $listt->id,
-            "boardId" => $board->id
         ]);
 
     }
 
-    function update(Request $request, Workboard $board, Listt $listt, Card $card) {
+    function update(Request $request, Card $card) {
         $validated = $request->validate([
             "title" => "required|string|max:1000",
             "details" => "nullable|string|max:3500",
@@ -121,18 +118,16 @@ class CardController extends Controller
 
         $card->save();
 
-        return $this->get($board, $listt, $card);
+        return $this->get($card);
 
     }
 
-    function destroy(Workboard $board, Listt $listt, Card $card) {
+    function destroy(Card $card) {
 
         $resp = [
             "id" => $card->id,
             "title" => $card->title,
             "position" => $card->position,
-            "listtId" => $listt->id,
-            "boardId" => $board->id
         ];
 
         $card->delete();

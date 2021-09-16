@@ -18,11 +18,11 @@
                         <div class="font-weight-bold ml-3" style="color: #0b2133;">{{ $listt->name }}</div>
                         <div>
                             <a class="btn" href="{{ route("listt.edit", ["board" => $board->id, "listt" => $listt->id] ) }}"><i class="bi bi-pencil"></i></a>
-                            <button class="btn" onclick="deleteListt({{$board->id}}, {{ $listt->id }})"><i class="bi bi-trash"></i></button>
+                            <button class="btn" onclick="deleteListt({{ $listt->id }})"><i class="bi bi-trash"></i></button>
                         </div>
                     </div>
 
-                    <div class="kanban-cards sortable py-1" data-board-id="{{ $board->id }}" data-listt-id="{{ $listt->id }}">
+                    <div class="kanban-cards sortable py-1" data-listt-id="{{ $listt->id }}">
                     @foreach($listt->cards as $card)
                         <div class="kanban-card kanban-card-gray" data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" data-toggle="modal" data-target="#edit-card-modal">
                             <div>{{ $card->title }}</div>
@@ -40,7 +40,7 @@
                     @endforeach
                     </div>
 
-                    <div class="btn btn-create-card px-2 py-1 m-1" style="text-align: left" onclick="createCard({{$board->id}},{{$listt->id}})"><i class="bi bi-plus-lg"></i> Add card</div>
+                    <div class="btn btn-create-card px-2 py-1 m-1" style="text-align: left" onclick="createCard({{$listt->id}})"><i class="bi bi-plus-lg"></i> Add card</div>
                 </div>
             </div>
         @endforeach
@@ -65,7 +65,7 @@
                 <div class="form-group">
                     <span class="text-danger modal-error"></span>
                     <label for="card-title" style="font-weight: 300; font-size: small; color: #777; margin-left: 0.25rem; margin-bottom: 0 !important;">Card Title</label>
-                    <input type="text" placeholder="Card Title" class="form-control p-1 mb-2" onchange="_editCard({{$board->id}})" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
+                    <input type="text" placeholder="Card Title" class="form-control p-1 mb-2" onchange="_editCard()" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
 
                     <div style="margin-left: 0.25rem; display:flex;" class="align-items-baseline" id="card-due-date-container">
                         <i class="bi bi-calendar"></i><span class="px-1" style="color: #777"> Due date</span>
@@ -82,14 +82,14 @@
 
                 <div class="row justify-content-between">
                     <div class="col-lg-8">
-                        <textarea class="w-100 p-2" onchange="_editCard({{$board->id}})" id="card-details" name="card-details" placeholder="Add details to this card..." style="border: none; border-radius: 0.5rem; background: #fafafa"></textarea>
+                        <textarea class="w-100 p-2" onchange="_editCard()" id="card-details" name="card-details" placeholder="Add details to this card..." style="border: none; border-radius: 0.5rem; background: #fafafa"></textarea>
                     </div>
                     <div class="col-lg-3 d-flex flex-column">
                         <span class="p-1" style="color: #777777; text-align: center">Settings</span>
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#date-modal" ><i class="bi bi-calendar-plus"></i> Due Date</button>
                         <hr>
                         <span class="p-1" style="color: #777777; text-align: center">Card Actions</span>
-                        <button class="btn btn-outline-primary" data-dismiss="modal" onclick="_deleteCard({{$board->id}})" ><i class="bi bi-trash"></i> Delete</button>
+                        <button class="btn btn-outline-primary" data-dismiss="modal" onclick="_deleteCard()" ><i class="bi bi-trash"></i> Delete</button>
                     </div>
                 </div>
             </div>
@@ -128,19 +128,19 @@
                 editCardModal.dataset.cardId = e.currentTarget.dataset.id;
                 editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
 
-                axios.get("/b/" + {{$board->id}} + "/l/" + e.currentTarget.dataset.listtId + "/c/" + e.currentTarget.dataset.id ).then(resp => {
+                axios.get("/c/" + e.currentTarget.dataset.id ).then(resp => {
                     displayCardInfoInModal(resp.data);
                 })
             });
         }
     }
 
-    function _editCard(boardId) {
-        editCard(boardId, editCardModal.dataset.listtId, editCardModal.dataset.cardId);
+    function _editCard() {
+        editCard(editCardModal.dataset.cardId);
     }
 
-    function _deleteCard(boardId) {
-        deleteCard(boardId, editCardModal.dataset.listtId, editCardModal.dataset.cardId);
+    function _deleteCard() {
+        deleteCard(editCardModal.dataset.cardId);
     }
 
 </script>

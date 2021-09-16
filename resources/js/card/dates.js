@@ -47,7 +47,7 @@ window.setDueDate = function() {
     //Store date
     const dueDate = document.getElementById("card-due-date");
     dueDate.dataset.storedDate = dateObj.toUTCString();
-    _editCard(1);
+    _editCard();
 
 }
 
@@ -59,7 +59,7 @@ window.markAsComplete = function(value) {
         document.getElementById("card-due-date-check").removeAttribute("completed");
     }
 
-    _editCard(1);
+    _editCard();
 }
 
 window.removeDueDate = function() {
@@ -67,5 +67,5 @@ window.removeDueDate = function() {
     dueDate.dataset.storedDate = "";
     document.getElementById("card-due-date-check").removeAttribute("completed");
 
-    _editCard(1);
+    _editCard();
 }

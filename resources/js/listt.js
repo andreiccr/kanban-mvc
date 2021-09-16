@@ -1,5 +1,5 @@
-window.deleteListt = function(boardId, listtId) {
-    axios.delete("/b/" + boardId + "/l/" + listtId).then(response => {
+window.deleteListt = function(listtId) {
+    axios.delete("/l/" + listtId).then(response => {
         if(response.status === 200) {
             location.reload();
         }
