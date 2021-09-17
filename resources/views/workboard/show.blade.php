@@ -32,10 +32,11 @@
                                 <i class="bi bi-justify-left m-1" style="color:#4e535e; font-size: medium"></i>
                             @endif
 
-                            @if($card->done_date)
-                                <div class="d-inline-block m-1"><i class="bi bi-calendar-check" style="color:#188c26; font-size: medium"></i><span class="p-1" style="font-size: small; color:#188c26; ">{{date("d M", strtotime($card->done_date))}}</span></div>
-                            @elseif($card->due_date)
-                                <div class="d-inline-block m-1"><i class="bi bi-calendar" style="color:#4e535e; font-size: medium"></i><span class="p-1" style="font-size: small; color:#1a202c;">{{date("d M", strtotime($card->due_date))}}</span></div>
+                            @if($card->due_date)
+                                <div class="d-inline-block m-1">
+                                    <i class="bi @if($card->done_date) bi-calendar-check @else bi-calendar @endif" style="@if($card->done_date) color:#188c26; @else color:#4e535e; @endif font-size: medium"></i><span class="card-due p-1" data-card-due="{{ date(DateTimeInterface::ISO8601, strtotime($card->due_date)) }}" style="font-size: small; @if($card->done_date) color:#188c26; @else color:#4e535e; @endif "></span>
+                                </div>
+
                             @endif
                         </div>
                     @endforeach
@@ -121,6 +122,13 @@
 </div>
 
 <script>
+
+    window.onload = () => {
+        let cards = document.getElementsByClassName("card-due");
+        for(let i=0; i<cards.length; i++) {
+            cards.item(i).innerText = makeShortDueDateString(cards.item(i).dataset.cardDue);
+        }
+    };
 
     const editCardModal = document.getElementById("edit-card-modal");
     const modalSpinner = document.querySelector("#edit-card-modal .spinner-border");
