@@ -51,6 +51,9 @@ window.displayCardInfoInModal = function(card) {
         dueDate.innerText = makeDueDateString(card["due_date"]);
 
         if(card["done_date"] !== null && card["done_date"] !== undefined) {
+
+            dueDate.dataset.completed = "true";
+
             doneDateContainer.hidden = false;
             dueDateContainer.hidden = true;
             if(Date.parse(card["done_date"]) > Date.parse(card["due_date"])) {
@@ -65,6 +68,8 @@ window.displayCardInfoInModal = function(card) {
             dueDateContainer.hidden = false;
             doneDateContainer.hidden = true;
             doneDate.innerText = "";
+
+            dueDate.dataset.completed = "false";
         }
 
     } else {
@@ -72,6 +77,7 @@ window.displayCardInfoInModal = function(card) {
         doneDateContainer.hidden = true;
         dueDate.innerText = "";
         dueDate.dataset.storedDate = "";
+        dueDate.dataset.completed = "false";
         doneDate.innerText = "";
     }
 }
@@ -120,15 +126,14 @@ window.editCard = function(cardId) {
     const cardTitle = document.getElementById("card-title").value;
     const cardDetails = document.getElementById("card-details").value;
     const cardDueDate = document.getElementById("card-due-date").dataset.storedDate;
-
-    const cardMarkedAsCompleted = document.getElementById("card-due-date-check").getAttribute("completed");
+    const cardMarkedAsCompleted = document.getElementById("card-due-date").dataset.completed;
 
     axios.patch("/c/" + cardId,
         {
             "title" : cardTitle ,
             "details" : cardDetails ,
             "due_date" : cardDueDate.length>0 ? cardDueDate : null ,
-            "marked_as_completed" : cardMarkedAsCompleted ,
+            "marked_as_completed" : cardMarkedAsCompleted === "false" ? null : "true" ,
         }).then(response => {
 
             //Update card name in the list

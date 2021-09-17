@@ -57,16 +57,18 @@ window.setDueDate = function() {
     //Store date
     const dueDate = document.getElementById("card-due-date");
     dueDate.dataset.storedDate = dateObj.toUTCString();
+    dueDate.dataset.completed = "false";
+
     _editCard();
 
 }
 
 window.markAsComplete = function(value) {
     if(value === true) {
-        document.getElementById("card-due-date-check").setAttribute("completed", "true");
+        document.getElementById("card-due-date").dataset.completed = "true";
     }
     else {
-        document.getElementById("card-due-date-check").removeAttribute("completed");
+        document.getElementById("card-due-date").dataset.completed = "false";
     }
 
     _editCard();
@@ -75,7 +77,7 @@ window.markAsComplete = function(value) {
 window.removeDueDate = function() {
     const dueDate = document.getElementById("card-due-date");
     dueDate.dataset.storedDate = "";
-    document.getElementById("card-due-date-check").removeAttribute("completed");
+    dueDate.dataset.completed = "false";
 
     _editCard();
 }

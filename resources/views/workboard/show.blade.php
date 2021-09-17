@@ -72,7 +72,7 @@
 
                     <div style="margin-left: 0.25rem; display:flex;" class="align-items-baseline" id="card-due-date-container">
                         <i class="bi bi-calendar"></i><span class="px-1" style="color: #777"> Due date</span>
-                        <span class="p-1" id="card-due-date" data-stored-date="" data-toggle="modal" data-target="#date-modal" style="color: #495057; background: #fafafa; cursor:pointer;">13 September 2021</span>
+                        <span class="p-1" id="card-due-date" data-completed="false" data-stored-date="" data-toggle="modal" data-target="#date-modal" style="color: #495057; background: #fafafa; cursor:pointer;">13 September 2021</span>
 
                         <button class="btn btn-outline-primary px-2 py-1 ml-2" id="card-due-date-check" style="font-size: small; border:none;" onclick="markAsComplete(true)"><i class="bi bi-calendar-check"></i></button>
                         <button class="btn btn-outline-danger px-2 py-1 ml-1" style="font-size: small; border:none;" onclick="removeDueDate()"><i class="bi bi-calendar-minus"></i></button>
