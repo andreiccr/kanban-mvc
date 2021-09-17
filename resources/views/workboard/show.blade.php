@@ -10,10 +10,11 @@
         </div>
     </div>
     <hr>
-    <div class="d-flex align-items-start" style="margin-left: -15px;">
+</div>
+    <div class="d-flex align-items-start w-100 px-5 pb-1" style="overflow-x: auto; height: calc((100vh - 80px) - (68px + 1.5rem));">
         @foreach($board->listts as $listt)
-            <div class="d-flex mx-1" style="width:300px">
-                <div class="card p-2" style="cursor: pointer; min-width:300px;">
+            <div class="d-flex mx-2" style="width:275px; height:100%;">
+                <div class="card p-2" style="cursor: pointer; min-width:275px;">
                     <div class="d-flex align-items-baseline justify-content-between">
                         <div class="font-weight-bold ml-3" style="color: #0b2133;">{{ $listt->name }}</div>
                         <div>
@@ -22,7 +23,7 @@
                         </div>
                     </div>
 
-                    <div class="kanban-cards sortable py-1" data-listt-id="{{ $listt->id }}">
+                    <div class="kanban-cards sortable py-1" data-listt-id="{{ $listt->id }}" style="overflow-y: auto; overflow-x: hidden; height:100%;">
                     @foreach($listt->cards as $card)
                         <div class="kanban-card kanban-card-gray" data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" data-toggle="modal" data-target="#edit-card-modal">
                             <div>{{ $card->title }}</div>
@@ -53,7 +54,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 <div class="modal fade" id="edit-card-modal" tabindex="-1" role="dialog" aria-labelledby="editCardModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

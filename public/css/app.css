@@ -10031,3 +10031,7 @@ h3 {
   background: #f4f4f4;
   color: black;
 }
+
+main {
+  overflow-x: hidden !important;
+}

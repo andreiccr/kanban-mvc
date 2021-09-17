@@ -8,3 +8,7 @@
 @import '~bootstrap/scss/bootstrap';
 
 @import 'card';
+
+main {
+    overflow-x: hidden !important;
+}
