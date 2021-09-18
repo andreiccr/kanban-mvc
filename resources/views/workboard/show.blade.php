@@ -29,7 +29,7 @@
     <div class="d-flex align-items-start w-100 px-5 pb-1" style="overflow-x: auto; height: calc((100vh - 80px) - (68px + 1.5rem));">
         @foreach($board->listts as $listt)
             <div class="d-flex mx-2" style="width:275px; height:100%;">
-                <div class="card p-2" style="cursor: pointer; min-width:275px;">
+                <div class="card py-1" style="cursor: pointer; min-width:275px; background: #f7f7f7;">
                     <div class="d-flex align-items-baseline justify-content-between">
                         <div class="font-weight-bold ml-3" style="color: #0b2133;">{{ $listt->name }}</div>
                         <div>
@@ -57,7 +57,7 @@
                     @endforeach
                     </div>
 
-                    <div class="btn btn-create-card px-2 py-1 m-1" style="text-align: left" onclick="createCard({{$listt->id}})"><i class="bi bi-plus-lg"></i> Add card</div>
+                    <div class="btn btn-create-card px-2 py-1 m-1" style="text-align: left; color: #444;" onclick="createCard({{$listt->id}})"><i class="bi bi-plus-lg"></i> Add card</div>
                 </div>
             </div>
         @endforeach

@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-3 mt-2">
             <div data-toggle="modal" data-target="#new-workboard-modal" style="cursor: pointer">
-                <div class="card justify-content-center align-items-center p-2" style="height: 125px">
+                <div class="card justify-content-center align-items-center p-2" style="height: 125px;  background: #f7f7f7;">
                     <span class="text-dark font-weight-bold" style="font-size: large"><i class="bi bi-plus-lg"></i> Create a new board</span>
                 </div>
             </div>
@@ -13,7 +13,7 @@
         @foreach(Auth::user()->workboards as $workboard)
             <div class="col-md-3 mt-2">
                 <a href="{{ route("workboard.show", ["board" => $workboard->id]) }}" class="text-decoration-none">
-                    <div class="card justify-content-center align-items-center p-2" style="height: 125px">
+                    <div class="card justify-content-center align-items-center p-2" style="height: 125px; background: #f7f7f7;">
                         <span class="text-dark" style="font-size: large">{{ $workboard->name }}</span>
                     </div>
                 </a>
