@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid ml-5 mb-3">
     <div class="row">
-        <div class="d-flex align-items-baseline">
-            <h4 class="m-1" style="font-weight: bold; border: 1px solid #3490dc; border-radius: 0.25rem; color: #3490dc; font-size: large; padding: 0.6rem !important;">{{ $board->name }}</h4>
-            <button class="btn btn-outline-primary m-1" data-toggle="modal" data-target="#edit-workboard-modal" style="font-size: large"><i class="bi bi-pencil-square"></i></button>
-            <button class="btn btn-outline-primary m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large"><i class="bi bi-trash"></i></button>
+        <div class="d-flex align-items-center">
+            <h4 class="m-1" style="font-weight: bold; color: #0b2133; font-size: large; padding: 0.6rem !important;">{{ $board->name }}</h4>
+            <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
+            <button class="btn m-1" data-toggle="modal" data-target="#edit-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-pencil-square"></i></button>
+            <button class="btn m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-trash"></i></button>
         </div>
     </div>
-    <hr>
 </div>
+
     <div class="d-flex align-items-start w-100 px-5 pb-1" style="overflow-x: auto; height: calc((100vh - 80px) - (68px + 1.5rem));">
         @foreach($board->listts as $listt)
             <div class="d-flex mx-2" style="width:275px; height:100%;">
