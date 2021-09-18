@@ -7,8 +7,10 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import "workboard";
 @import 'card';
 
 main {
     overflow-x: hidden !important;
 }
+
