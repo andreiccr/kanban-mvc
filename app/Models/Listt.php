@@ -11,6 +11,17 @@ class Listt extends Model
 
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function($listt) {
+            $listt->position = $listt->workboard->listts()->count();
+            $listt->save();
+        });
+
+    }
+
     function workboard() {
         return $this->belongsTo(Workboard::class);
     }

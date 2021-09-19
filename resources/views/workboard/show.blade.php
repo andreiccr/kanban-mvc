@@ -26,9 +26,9 @@
     </div>
 </div>
 
-    <div class="d-flex align-items-start w-100 px-5 pb-1" style="overflow-x: auto; height: calc((100vh - 80px) - (68px + 1.5rem));">
+    <div class="d-flex align-items-start w-100 px-5 pb-1 listt-sortable" style="overflow-x: auto; height: calc((100vh - 80px) - (68px + 1.5rem));">
         @foreach($board->listts as $listt)
-            <div class="d-flex mx-2" style="width:275px; height:100%;">
+            <div class="d-flex mx-2 listt" data-id="{{$listt->id}}" style="width:275px; height:100%; float: left;">
                 <div class="card py-1" style="cursor: pointer; min-width:275px; background: #f7f7f7;">
                     <div class="d-flex align-items-baseline justify-content-between">
                         <div class="font-weight-bold ml-3" style="color: #0b2133;">{{ $listt->name }}</div>
@@ -69,6 +69,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 

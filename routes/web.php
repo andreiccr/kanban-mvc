@@ -21,6 +21,7 @@ Route::get('/', [App\Http\Controllers\WorkboardController::class, 'index'])->nam
 Route::post('/b/{board}/l', [App\Http\Controllers\ListtController::class, 'create'])->name('listt.create');
 Route::delete('/l/{listt}', [App\Http\Controllers\ListtController::class, 'destroy'])->name('listt.destroy');
 Route::patch('/l/{listt}', [App\Http\Controllers\ListtController::class, 'update'])->name('listt.update');
+Route::patch('/l/{listt}/move', [App\Http\Controllers\ListtController::class, 'move'])->name('listt.move');
 Route::get('/l/{listt}/edit', [App\Http\Controllers\ListtController::class, 'edit'])->name('listt.edit');
 
 Route::get('/b/{board}', [App\Http\Controllers\WorkboardController::class, 'show'])->name('workboard.show');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ListtDeletedEvent;
+use App\Events\ListtReorderedEvent;
 use App\Models\Listt;
 use App\Models\Workboard;
 use Illuminate\Http\Request;
@@ -26,6 +28,27 @@ class ListtController extends Controller
         return response("OK", 200);
     }
 
+    function move(Request $request, Listt $listt) {
+        $validated = $request->validate([
+            "position" => "required|integer|numeric",
+        ]);
+
+        $newPosition = min(max($validated["position"], 1), $listt->workboard->listts->count());
+        if($newPosition != $listt->position){
+            event(new ListtReorderedEvent($listt, $newPosition));
+            $listt->position = $newPosition;
+        }
+
+        $listt->save();
+
+        return response()->json([
+            "id" => $listt->id,
+            "name" => $listt->name,
+            "position" => $listt->position,
+        ]);
+
+    }
+
     function update(Request $request, Listt $listt) {
         $validated = $request->validate([
             "name" => "required|string|max:500"
@@ -40,7 +63,16 @@ class ListtController extends Controller
 
     function destroy(Listt $listt) {
 
+        $resp = [
+            "id" => $listt->id,
+            "name" => $listt->name,
+            "position" => $listt->position,
+            "boardId" => $listt->workboard->id,
+        ];
+
         $listt->delete();
+
+        event(new ListtDeletedEvent($resp));
 
         return response("OK", 200);
     }

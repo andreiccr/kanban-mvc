@@ -1,3 +1,23 @@
+$( function() {
+    $( ".listt-sortable" ).sortable({
+        items: ".listt",
+        tolerance: "pointer",
+        placeholder: "dragged-listt-placeholder",
+        update: function(event, ui) {
+            const listts = document.querySelectorAll(".listt");
+            for(let i=0; i<listts.length; i++) {
+                if(listts[i].dataset.id == ui.item.data("id")) {
+                    reorderListt(ui.item.data("id"), i+1);
+                    break;
+                }
+            }
+        }
+
+    }).disableSelection();
+
+
+} );
+
 window.deleteListt = function(listtId) {
     axios.delete("/l/" + listtId).then(response => {
         if(response.status === 200) {
@@ -6,6 +26,12 @@ window.deleteListt = function(listtId) {
     }).catch(error => {
 
     });
+}
+
+window.reorderListt = function(listtId, newPosition) {
+
+    axios.patch("/l/" + listtId + "/move", {"position" : newPosition } );
+
 }
 
 window.createNewListt = function(boardId) {

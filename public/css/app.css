@@ -10017,6 +10017,12 @@ h3 {
   box-shadow: none !important;
 }
 
+.dragged-listt-placeholder {
+  height: 100%;
+  width: 275px;
+  min-width: 275px;
+}
+
 .kanban-card {
   padding: 0.75rem;
   margin: 0.5rem;

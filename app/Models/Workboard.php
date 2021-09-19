@@ -12,7 +12,7 @@ class Workboard extends Model
     protected $guarded = [];
 
     function listts() {
-        return $this->hasMany(Listt::class);
+        return $this->hasMany(Listt::class)->orderBy("position")->orderBy("name");;
     }
 
     function user() {

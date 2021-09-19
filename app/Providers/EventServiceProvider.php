@@ -5,7 +5,10 @@ namespace App\Providers;
 use App\Events\CardDeletedEvent;
 use App\Events\CardMovedToAnotherListEvent;
 use App\Events\CardReorderedEvent;
+use App\Events\ListtDeletedEvent;
+use App\Events\ListtReorderedEvent;
 use App\Listeners\ReorderCardsInListtListener;
+use App\Listeners\ReorderListtsInWorkboardListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -30,6 +33,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         CardMovedToAnotherListEvent::class => [
             ReorderCardsInListtListener::class,
+        ],
+        ListtReorderedEvent::class => [
+            ReorderListtsInWorkboardListener::class,
+        ],
+        ListtDeletedEvent::class => [
+            ReorderListtsInWorkboardListener::class,
         ],
     ];
 
