@@ -128,6 +128,7 @@ class CardController extends Controller
             "id" => $card->id,
             "title" => $card->title,
             "position" => $card->position,
+            "listtId" => $card->listt->id
         ];
 
         $card->delete();
