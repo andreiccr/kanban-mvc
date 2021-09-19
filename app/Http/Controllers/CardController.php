@@ -39,12 +39,7 @@ class CardController extends Controller
             "position" => 0
         ]);
 
-        return response()->json([
-            "id" => $card->id,
-            "title" => "New card",
-            "position" => $card->position,
-            "listtId" => $listt->id,
-        ]);
+        return $this->get($card);
 
     }
 

@@ -110,9 +110,13 @@ window.createCard = function(listtId) {
             editCardModal.dataset.cardId = e.currentTarget.dataset.id;
             editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
 
-            axios.get("/l/" + e.currentTarget.dataset.listtId + "/c/" + e.currentTarget.dataset.id ).then(resp => {
+            modalSpinner.hidden = false;
+            modalContent.hidden = true;
+            axios.get("/c/" + e.currentTarget.dataset.id ).then(resp => {
                 displayCardInfoInModal(resp.data);
-            })
+                modalSpinner.hidden = true;
+                modalContent.hidden = false;
+            });
         });
 
         cardContainer.appendChild(newCard);
