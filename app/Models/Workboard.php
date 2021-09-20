@@ -20,6 +20,6 @@ class Workboard extends Model
     }
 
     function members() {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'users_workboards');
     }
 }

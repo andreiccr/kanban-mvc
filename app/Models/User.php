@@ -58,6 +58,6 @@ class User extends Authenticatable
     }
 
     function joinedWorkboards() {
-        return $this->belongsToMany(Workboard::class);
+        return $this->belongsToMany(Workboard::class, 'users_workboards');
     }
 }

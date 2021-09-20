@@ -13,7 +13,7 @@ class CreateWorkboardsUsersPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('WorkboardsUsers', function (Blueprint $table) {
+        Schema::create('users_workboards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 
@@ -30,6 +30,6 @@ class CreateWorkboardsUsersPivotTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('WorkboardsUsers');
+        Schema::dropIfExists('users_workboards');
     }
 }
