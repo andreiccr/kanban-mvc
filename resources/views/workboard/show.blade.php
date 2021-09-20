@@ -22,6 +22,12 @@
             <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
             <button class="btn m-1" data-toggle="modal" data-target="#edit-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-pencil-square"></i></button>
             <button class="btn m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-trash"></i></button>
+
+            <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
+
+            <button class="btn btn-outline-secondary btn-add-member m-1" style="">
+                <i class="bi bi-people"></i> Add members
+            </button>
         </div>
     </div>
 </div>

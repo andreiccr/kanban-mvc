@@ -1,14 +1,14 @@
-.btn-boards-dropdown {
+.btn-boards-dropdown, .btn-add-member {
     color: #0b2133 !important;
     background: none !important;
     border: none !important;
     font-weight: bold !important;
 }
 
-.btn-boards-dropdown:hover {
+.btn-boards-dropdown:hover, .btn-add-member:hover {
     color: #3490dc !important;
 }
 
-.btn-boards-dropdown:focus, .btn-boards-dropdown.focus {
+.btn-boards-dropdown:focus, .btn-boards-dropdown.focus, {
     box-shadow: none !important;
 }
