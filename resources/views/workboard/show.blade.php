@@ -25,7 +25,7 @@
 
             <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
 
-            <button class="btn btn-outline-secondary btn-add-member m-1" style="">
+            <button class="btn btn-outline-secondary btn-add-member m-1" data-toggle="modal" data-target="#add-member-modal" style="">
                 <i class="bi bi-people"></i> Add members
             </button>
         </div>
@@ -236,6 +236,35 @@
                 <p>Are you sure you want to delete this board? <span class="text-danger">All lists and cards associated with it will be permanently deleted!</span></p>
                 <button type="button" id="delete-board-btn" onclick="deleteBoard({{ $board->id }})" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-member-modal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="form-group">
+                    <span class="text-danger modal-error"></span>
+                    <label for="listt-name">Add member to board</label>
+                    <hr class="mt-0 mb-3">
+                    <input type="text" class="form-control" id="listt-name" name="listt-name" placeholder="Email address">
+
+                    <div class="form-group mt-3">
+                        <label for="member-role-input">Choose member's role</label>
+                        <select class="form-control" id="member-role-input">
+                            <option>Regular</option>
+                            <option>Manager</option>
+                        </select>
+                        <small class="text-dark" id="role-input-helper">Regular members can only view cards and move them between lists</small>
+                    </div>
+                </div>
+
+                <button type="button" id="add-member-btn" onclick="" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add member</button>
             </div>
         </div>
     </div>
