@@ -18,4 +18,8 @@ class Workboard extends Model
     function user() {
         return $this->belongsTo(User::class);
     }
+
+    function members() {
+        return $this->belongsToMany(User::class);
+    }
 }

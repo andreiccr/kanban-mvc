@@ -29,6 +29,10 @@ Route::post('/b/', [App\Http\Controllers\WorkboardController::class, 'create'])-
 Route::patch('/b/{board}', [App\Http\Controllers\WorkboardController::class, 'update'])->name('workboard.update');
 Route::delete('/b/{board}', [App\Http\Controllers\WorkboardController::class, 'destroy'])->name('workboard.destroy');
 
+Route::post('/b/{board}/u/{user}', [App\Http\Controllers\WorkboardController::class, 'register'])->name('workboard.register');
+Route::patch('/b/{board}/u/{user}', [App\Http\Controllers\WorkboardController::class, 'reregister'])->name('workboard.reregister');
+Route::delete('/b/{board}/u/{user}', [App\Http\Controllers\WorkboardController::class, 'unregister'])->name('workboard.unregister');
+
 Route::get('/c/{card}', [App\Http\Controllers\CardController::class, 'get'])->name('card.get');
 Route::post('/l/{listt}/c', [App\Http\Controllers\CardController::class, 'create'])->name('card.create');
 Route::patch('/c/{card}', [App\Http\Controllers\CardController::class, 'update'])->name('card.update');

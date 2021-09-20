@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Workboard;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -25,6 +26,48 @@ class WorkboardController extends Controller
     public function index()
     {
         return view('workboard.index');
+    }
+
+    public function register(Request $request, Workboard $board, User $user) {
+        $validated = $request->validate([
+            "role" => "required|integer|numeric|min:1"
+        ]);
+
+        $role = max($validated["role"] , 2);
+
+        $board->members()->attach($user->id, ["role" => $role]);
+
+        return response()->json([
+            "success" => $board->members->contains($user->id),
+            "role" => $role,
+        ]);
+    }
+
+    public function reregister(Request $request, Workboard $board, User $user) {
+
+        $validated = $request->validate([
+            "role" => "required|integer|numeric|min:1"
+        ]);
+
+        $role = max($validated["role"] , 2);
+
+        $board->members()->detach($user->id);
+        $board->members()->attach($user->id, ["role" => $role ]);
+
+        return response()->json([
+            "success" => $board->members->contains($user->id),
+            "role" => $role,
+        ]);
+
+    }
+
+    public function unregister(Workboard $board, User $user) {
+
+        $board->members()->detach($user->id);
+
+        return response()->json([
+            "success" => !$board->members->contains($user->id),
+        ]);
     }
 
     /**
