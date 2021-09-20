@@ -30,6 +30,11 @@
             </button>
         </div>
     </div>
+    <div class="row">
+        @foreach($board->members as $member)
+            <div class="ml-3" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($member->email,0,2)) }}</div>
+        @endforeach
+    </div>
 </div>
 
     <div class="d-flex align-items-start w-100 px-5 pb-1 listt-sortable" style="overflow-x: auto; height: calc((100vh - 80px) - (68px + 1.5rem));">
