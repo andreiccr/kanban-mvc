@@ -265,11 +265,11 @@
 
                     <div class="form-group mt-3">
                         <label for="member-role-input">Choose member's role</label>
-                        <select class="form-control" id="member-role-input">
+                        <select class="form-control" id="member-role-input" onchange="changeRoleHelperText()">
                             <option value="1">Regular</option>
                             <option value="2">Manager</option>
                         </select>
-                        <small class="text-dark" id="role-input-helper">Regular members can only view cards and move them between lists</small>
+                        <small class="text-dark role-input-helper">Regular members can only view cards and move them between lists</small>
                     </div>
                 </div>
 
@@ -278,6 +278,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    function changeRoleHelperText() {
+        const roleInput = document.getElementById("member-role-input");
+        let role = roleInput.options[roleInput.selectedIndex].value;
+
+        const helperText = document.querySelector("#add-member-modal .role-input-helper");
+        if(role === "1") {
+            helperText.innerText = "Regular members can only view cards and move them between lists";
+        } else if(role === "2") {
+            helperText.innerText = "Managers have full permissions over the board"
+        } else {
+            helperText.innerText = "";
+        }
+    }
+</script>
 
 <div class="modal fade" id="show-member-modal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
