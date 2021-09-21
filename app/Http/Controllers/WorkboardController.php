@@ -34,11 +34,17 @@ class WorkboardController extends Controller
         ]);
 
         $role = max($validated["role"] , 2);
+        $alreadyRegistered = false;
 
-        $board->members()->attach($user->id, ["role" => $role]);
+        if($board->members->contains($user->id) == false) {
+            $board->members()->attach($user->id, ["role" => $role]);
+        } else {
+            $alreadyRegistered = true;
+        }
 
         return response()->json([
             "success" => $board->members->contains($user->id),
+            "alreadyRegistered" => $alreadyRegistered,
             "role" => $role,
         ]);
     }
