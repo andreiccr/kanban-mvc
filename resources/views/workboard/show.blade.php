@@ -257,22 +257,23 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <div class="form-group">
-                    <span class="text-danger modal-error"></span>
+
                     <label for="member-email">Add member to board</label>
                     <hr class="mt-0 mb-3">
+                    <span class="text-danger modal-error"></span>
                     <input type="email" class="form-control" id="member-email" name="member-email" placeholder="Email address">
 
                     <div class="form-group mt-3">
                         <label for="member-role-input">Choose member's role</label>
                         <select class="form-control" id="member-role-input">
-                            <option>Regular</option>
-                            <option>Manager</option>
+                            <option value="1">Regular</option>
+                            <option value="2">Manager</option>
                         </select>
                         <small class="text-dark" id="role-input-helper">Regular members can only view cards and move them between lists</small>
                     </div>
                 </div>
 
-                <button type="button" id="add-member-btn" onclick="" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add member</button>
+                <button type="button" id="add-member-btn" onclick="addMember({{$board->id}})" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add member</button>
             </div>
         </div>
     </div>

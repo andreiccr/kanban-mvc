@@ -28,15 +28,21 @@ class WorkboardController extends Controller
         return view('workboard.index');
     }
 
-    public function register(Request $request, Workboard $board, User $user) {
+    public function register(Request $request, Workboard $board, $user) {
         $validated = $request->validate([
             "role" => "required|integer|numeric|min:1"
         ]);
 
+        try {
+            $user = User::where("email", $user)->firstOrFail();
+        } catch(\Exception $e) {
+            return response()->json(["userNotFound" => true], 404);
+        }
+
         $role = max($validated["role"] , 2);
         $alreadyRegistered = false;
 
-        if($board->members->contains($user->id) == false) {
+        if($board->members->contains($user->id) == false && $board->user != $user) {
             $board->members()->attach($user->id, ["role" => $role]);
         } else {
             $alreadyRegistered = true;
