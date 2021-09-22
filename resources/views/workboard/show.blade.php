@@ -20,14 +20,18 @@
             <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
             <h4 class="m-1" style="font-weight: bold; color: #0b2133; font-size: large; padding: 0.6rem !important;">{{ $board->name }}</h4>
             <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
+
             <button class="btn m-1" data-toggle="modal" data-target="#edit-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-pencil-square"></i></button>
-            <button class="btn m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-trash"></i></button>
+            @if($isBoardOwner)
+                <button class="btn m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-trash"></i></button>
+            @endif
+
 
             <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
-
             <button class="btn btn-outline-secondary btn-add-member m-1" data-toggle="modal" data-target="#add-member-modal" style="">
                 <i class="bi bi-people"></i> Add members
             </button>
+
         </div>
     </div>
     <div class="row">
@@ -75,6 +79,7 @@
                 </div>
             </div>
         @endforeach
+
 
         <div class="d-flex mx-1 " style="width:300px">
             <div style="min-width:300px;">

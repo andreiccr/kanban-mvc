@@ -7,6 +7,7 @@ use App\Events\ListtReorderedEvent;
 use App\Models\Listt;
 use App\Models\Workboard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ListtController extends Controller
 {
@@ -16,6 +17,12 @@ class ListtController extends Controller
     }
 
     function create(Request $request, Workboard $board) {
+
+        // Allow board owner and board members
+        if (Auth::user()->id != $board->user->id &&
+            $board->members->contains(Auth::user()->id) == false )
+            return response(null, 403);
+
         $validated = $request->validate([
            "name" => "required|string|max:500"
         ]);
@@ -50,6 +57,9 @@ class ListtController extends Controller
     }
 
     function update(Request $request, Listt $listt) {
+
+        $this->authorize("update", $listt);
+
         $validated = $request->validate([
             "name" => "required|string|max:500"
         ]);
@@ -62,6 +72,8 @@ class ListtController extends Controller
     }
 
     function destroy(Listt $listt) {
+
+        $this->authorize("delete", $listt);
 
         $resp = [
             "id" => $listt->id,

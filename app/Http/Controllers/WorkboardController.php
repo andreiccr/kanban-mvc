@@ -46,6 +46,9 @@ class WorkboardController extends Controller
     }
 
     public function register(Request $request, Workboard $board, $user) {
+
+        $this->authorize("update", $board);
+
         $validated = $request->validate([
             "role" => "required|integer|numeric|min:1"
         ]);
@@ -74,6 +77,8 @@ class WorkboardController extends Controller
 
     public function reregister(Request $request, Workboard $board, User $user) {
 
+        $this->authorize("update", $board);
+
         $validated = $request->validate([
             "role" => "required|integer|numeric|min:1"
         ]);
@@ -91,6 +96,8 @@ class WorkboardController extends Controller
     }
 
     public function unregister(Workboard $board, $user) {
+
+        $this->authorize("update", $board);
 
         try {
             $user = User::where("email", $user)->firstOrFail();
@@ -113,7 +120,14 @@ class WorkboardController extends Controller
     {
         $this->authorize("view", $board);
 
-        return view('workboard.show' , compact('board'));
+        $isBoardOwner = $board->user->id == \auth()->user()->id;
+        $isBoardMember = $board->members->contains(auth()->user()->id);
+        if($isBoardMember)
+            $isBoardManager = $board->members->find(auth()->user()->id)->pivot->role == 2;
+        else
+            $isBoardManager = true; //Board owner have manager permissions
+
+        return view('workboard.show' , compact('board', 'isBoardOwner', 'isBoardManager', 'isBoardOwner'));
     }
 
 

@@ -11,6 +11,7 @@ use App\Models\Workboard;
 use DateTime;
 use DateTimeInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {
@@ -21,6 +22,8 @@ class CardController extends Controller
     }
 
     function get(Card $card) {
+
+        $this->authorize("view", $card);
 
         return response()->json([
             "id" => $card->id,
@@ -34,6 +37,11 @@ class CardController extends Controller
 
     function create(Listt $listt) {
 
+        // Allow board owner and board members
+        if(Auth::user()->id != $listt->workboard->user->id &&
+            $listt->workboard->members->contains(Auth::user()->id)==false )
+            return response(null, 403);
+
         $card = $listt->cards()->create([
             "title" => "New card",
             "position" => 0
@@ -44,6 +52,9 @@ class CardController extends Controller
     }
 
     function move(Request $request, Card $card) {
+
+        $this->authorize("update", $card);
+
         $validated = $request->validate([
             "position" => "required|integer|numeric",
             "listtId" => "required|integer|numeric"
@@ -87,6 +98,9 @@ class CardController extends Controller
     }
 
     function update(Request $request, Card $card) {
+
+        $this->authorize("update", $card);
+
         $validated = $request->validate([
             "title" => "required|string|max:1000",
             "details" => "nullable|string|max:3500",
@@ -118,6 +132,8 @@ class CardController extends Controller
     }
 
     function destroy(Card $card) {
+
+        $this->authorize("delete", $card);
 
         $resp = [
             "id" => $card->id,
