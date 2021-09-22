@@ -27,10 +27,12 @@ window.loadMemberInModal = function(boardId, userId) {
 
     axios.get("/b/" + boardId + "/u/" + userId).then(resp => {
         email.value = resp.data['email'];
+        removeBtn.innerHTML = "<i class=\"bi bi-dash-lg\"></i> Remove member"
+        removeBtn.removeAttribute("disabled");
         if(resp.data['isOwner'] === true) {
             removeBtn.setAttribute("disabled", "true");
-        } else {
-            removeBtn.removeAttribute("disabled");
+        } else if(resp.data['isYou'] === true) {
+            removeBtn.innerHTML = "<i class=\"bi bi-dash-lg\"></i> Leave board";
         }
     });
 }

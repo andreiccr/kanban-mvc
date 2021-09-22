@@ -35,7 +35,8 @@ class WorkboardController extends Controller
             return response()->json([
                 "email" => $user->email,
                 "role" => $role,
-                "isOwner" => $board->user->id == $user->id
+                "isOwner" => $board->user->id == $user->id,
+                "isYou" => $user->id == Auth::user()->id
             ]);
         }
         else {
