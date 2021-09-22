@@ -44,6 +44,12 @@ window.loadMemberInModal = function(boardId, userId) {
     });
 }
 
-window.removeMember = function() {
+window.removeMember = function(boardId) {
+    const email = document.getElementById("current-member-email");
+    axios.delete("/b/" + boardId + "/u/" + email.value).then(resp => {
+        location.reload();
+    }).catch(err => {
+
+    });
 
 }

@@ -66,7 +66,7 @@ class WorkboardController extends Controller
         }
 
         return response()->json([
-            "success" => $board->members->contains($user->id),
+            "success" => true,
             "alreadyRegistered" => $alreadyRegistered,
             "role" => $role,
         ]);
@@ -90,12 +90,18 @@ class WorkboardController extends Controller
 
     }
 
-    public function unregister(Workboard $board, User $user) {
+    public function unregister(Workboard $board, $user) {
+
+        try {
+            $user = User::where("email", $user)->firstOrFail();
+        } catch(\Exception $e) {
+            return response()->json(["userNotFound" => true], 404);
+        }
 
         $board->members()->detach($user->id);
 
         return response()->json([
-            "success" => !$board->members->contains($user->id),
+            "success" => true,
         ]);
     }
 

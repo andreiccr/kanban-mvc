@@ -315,7 +315,7 @@
                 </div>
 
 {{--                <button type="button" id="save-member-btn" onclick="" class="btn btn-primary w-100 my-1"><i class="bi bi-check"></i> Save</button>--}}
-                <button type="button" id="remove-member-btn" onclick="" class="btn btn-outline-danger w-100 my-1"><i class="bi bi-dash-lg"></i> Remove member</button>
+                <button type="button" id="remove-member-btn" onclick="removeMember({{$board->id}})" class="btn btn-outline-danger w-100 my-1"><i class="bi bi-dash-lg"></i> Remove member</button>
             </div>
         </div>
     </div>
