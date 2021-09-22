@@ -103,12 +103,8 @@ class WorkboardController extends Controller
 
         $isBoardOwner = $board->user->id == \auth()->user()->id;
         $isBoardMember = $board->members->contains(auth()->user()->id);
-        if($isBoardMember)
-            $isBoardManager = $board->members->find(auth()->user()->id)->pivot->role == 2;
-        else
-            $isBoardManager = true; //Board owner have manager permissions
 
-        return view('workboard.show' , compact('board', 'isBoardOwner', 'isBoardManager', 'isBoardOwner'));
+        return view('workboard.show' , compact('board', 'isBoardOwner', 'isBoardOwner'));
     }
 
 
