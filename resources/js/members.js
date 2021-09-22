@@ -20,3 +20,30 @@ window.addMember = function(boardId) {
 
     });
 }
+
+
+
+window.loadMemberInModal = function(boardId, userId) {
+    const email = document.getElementById("current-member-email");
+    const role = $("#current-member-role-input");
+    const removeBtn = document.getElementById("remove-member-btn");
+    axios.get("/b/" + boardId + "/u/" + userId).then(resp => {
+        email.value = resp.data['email'];
+
+        if(resp.data['isOwner'] === true) {
+            removeBtn.setAttribute("disabled", "true");
+            role.val("Board Owner");
+        } else {
+            removeBtn.removeAttribute("disabled");
+            if(resp.data['role'] === 1)
+                role.val("Regular");
+            else if(resp.data['role'] === 2)
+                role.val("Manager");
+
+        }
+    });
+}
+
+window.removeMember = function() {
+
+}

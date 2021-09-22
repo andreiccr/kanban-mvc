@@ -32,9 +32,9 @@
     </div>
     <div class="row">
         @if($board->members->count() > 0)
-            <div class="ml-3" data-toggle="modal" data-target="#show-member-modal" title="{{$board->user->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($board->user->email,0,2)) }}</div>
+            <div class="ml-3" onclick="loadMemberInModal({{$board->id}}, {{$board->user->id}})" data-toggle="modal" data-target="#show-member-modal" title="{{$board->user->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($board->user->email,0,2)) }}</div>
             @foreach($board->members as $member)
-                <div class="ml-3" data-toggle="modal" data-target="#show-member-modal" title="{{$member->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($member->email,0,2)) }}</div>
+                <div class="ml-3" onclick="loadMemberInModal({{$board->id}}, {{$member->id}})" data-toggle="modal" data-target="#show-member-modal" title="{{$member->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($member->email,0,2)) }}</div>
             @endforeach
         @endif
     </div>
@@ -308,17 +308,13 @@
                     <hr class="mt-0 mb-3">
                     <input type="email" id="current-member-email" value="" class="form-control" readonly>
 
-                    <div class="form-group mt-3">
-                        <label for="current-member-role-input">Change member role</label>
-                        <select class="form-control" id="current-member-role-input">
-                            <option>Regular</option>
-                            <option>Manager</option>
-                        </select>
-                        <small class="text-dark" id="role-input-helper">Regular members can only view cards and move them between lists</small>
-                    </div>
+                    <div class="my-3"></div>
+                    <label for="current-member-role-input">Member role</label>
+                    <input type="email" id="current-member-role-input" value="" class="form-control" readonly>
+
                 </div>
 
-                <button type="button" id="save-member-btn" onclick="" class="btn btn-primary w-100 my-1"><i class="bi bi-check"></i> Save</button>
+{{--                <button type="button" id="save-member-btn" onclick="" class="btn btn-primary w-100 my-1"><i class="bi bi-check"></i> Save</button>--}}
                 <button type="button" id="remove-member-btn" onclick="" class="btn btn-outline-danger w-100 my-1"><i class="bi bi-dash-lg"></i> Remove member</button>
             </div>
         </div>

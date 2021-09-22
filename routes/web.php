@@ -29,6 +29,7 @@ Route::post('/b/', [App\Http\Controllers\WorkboardController::class, 'create'])-
 Route::patch('/b/{board}', [App\Http\Controllers\WorkboardController::class, 'update'])->name('workboard.update');
 Route::delete('/b/{board}', [App\Http\Controllers\WorkboardController::class, 'destroy'])->name('workboard.destroy');
 
+Route::get('/b/{board}/u/{user}', [App\Http\Controllers\WorkboardController::class, 'member'])->name('workboard.member');
 Route::post('/b/{board}/u/{user}', [App\Http\Controllers\WorkboardController::class, 'register'])->name('workboard.register');
 Route::patch('/b/{board}/u/{user}', [App\Http\Controllers\WorkboardController::class, 'reregister'])->name('workboard.reregister');
 Route::delete('/b/{board}/u/{user}', [App\Http\Controllers\WorkboardController::class, 'unregister'])->name('workboard.unregister');

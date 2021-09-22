@@ -28,6 +28,23 @@ class WorkboardController extends Controller
         return view('workboard.index');
     }
 
+    public function member(Workboard $board, User $user) {
+        if($board->members->contains($user->id) || $board->user->id == $user->id) {
+
+            $role = $board->user->id == $user->id ? 2 : $board->members->find($user->id)->pivot->role;
+            return response()->json([
+                "email" => $user->email,
+                "role" => $role,
+                "isOwner" => $board->user->id == $user->id
+            ]);
+        }
+        else {
+            return response()->json([
+                "error" => "The user is not a board member",
+            ], 404);
+        }
+    }
+
     public function register(Request $request, Workboard $board, $user) {
         $validated = $request->validate([
             "role" => "required|integer|numeric|min:1"
