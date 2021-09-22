@@ -56,7 +56,7 @@ class WorkboardController extends Controller
             return response()->json(["userNotFound" => true], 404);
         }
 
-        $role = max($validated["role"] , 2);
+        $role = min($validated["role"] , 2);
         $alreadyRegistered = false;
 
         if($board->members->contains($user->id) == false && $board->user != $user) {
