@@ -2,10 +2,8 @@ window.addMember = function(boardId) {
 
     const modalError = document.querySelector("#add-member-modal .modal-error");
     const userEmail = document.getElementById("member-email").value;
-    const roleInput = document.getElementById("member-role-input");
-    let role = roleInput.options[roleInput.selectedIndex].value;
 
-    axios.post("/b/" + boardId + "/u/" + userEmail, { "role" : role }).then(resp => {
+    axios.post("/b/" + boardId + "/u/" + userEmail, { "role" : 1 }).then(resp => {
 
         if(resp.data["alreadyRegistered"] === true) {
             modalError.innerText = "This user is already a member of this board!"
@@ -25,21 +23,14 @@ window.addMember = function(boardId) {
 
 window.loadMemberInModal = function(boardId, userId) {
     const email = document.getElementById("current-member-email");
-    const role = $("#current-member-role-input");
     const removeBtn = document.getElementById("remove-member-btn");
+
     axios.get("/b/" + boardId + "/u/" + userId).then(resp => {
         email.value = resp.data['email'];
-
         if(resp.data['isOwner'] === true) {
             removeBtn.setAttribute("disabled", "true");
-            role.val("Board Owner");
         } else {
             removeBtn.removeAttribute("disabled");
-            if(resp.data['role'] === 1)
-                role.val("Regular");
-            else if(resp.data['role'] === 2)
-                role.val("Manager");
-
         }
     });
 }

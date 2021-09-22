@@ -262,20 +262,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <div class="form-group">
-
                     <label for="member-email">Add member to board</label>
                     <hr class="mt-0 mb-3">
                     <span class="text-danger modal-error"></span>
                     <input type="email" class="form-control" id="member-email" name="member-email" placeholder="Email address">
-
-                    <div class="form-group mt-3">
-                        <label for="member-role-input">Choose member's role</label>
-                        <select class="form-control" id="member-role-input" onchange="changeRoleHelperText()">
-                            <option value="1">Regular</option>
-                            <option value="2">Manager</option>
-                        </select>
-                        <small class="text-dark role-input-helper">Regular members can only view cards and move them between lists</small>
-                    </div>
                 </div>
 
                 <button type="button" id="add-member-btn" onclick="addMember({{$board->id}})" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add member</button>
@@ -283,22 +273,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    function changeRoleHelperText() {
-        const roleInput = document.getElementById("member-role-input");
-        let role = roleInput.options[roleInput.selectedIndex].value;
-
-        const helperText = document.querySelector("#add-member-modal .role-input-helper");
-        if(role === "1") {
-            helperText.innerText = "Regular members can only view cards and move them between lists";
-        } else if(role === "2") {
-            helperText.innerText = "Managers have full permissions over the board"
-        } else {
-            helperText.innerText = "";
-        }
-    }
-</script>
 
 <div class="modal fade" id="show-member-modal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
@@ -312,14 +286,8 @@
                     <label for="current-member-email">Board Member</label>
                     <hr class="mt-0 mb-3">
                     <input type="email" id="current-member-email" value="" class="form-control" readonly>
-
-                    <div class="my-3"></div>
-                    <label for="current-member-role-input">Member role</label>
-                    <input type="email" id="current-member-role-input" value="" class="form-control" readonly>
-
                 </div>
 
-{{--                <button type="button" id="save-member-btn" onclick="" class="btn btn-primary w-100 my-1"><i class="bi bi-check"></i> Save</button>--}}
                 <button type="button" id="remove-member-btn" onclick="removeMember({{$board->id}})" class="btn btn-outline-danger w-100 my-1"><i class="bi bi-dash-lg"></i> Remove member</button>
             </div>
         </div>

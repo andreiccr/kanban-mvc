@@ -75,25 +75,6 @@ class WorkboardController extends Controller
         ]);
     }
 
-    public function reregister(Request $request, Workboard $board, User $user) {
-
-        $this->authorize("update", $board);
-
-        $validated = $request->validate([
-            "role" => "required|integer|numeric|min:1"
-        ]);
-
-        $role = max($validated["role"] , 2);
-
-        $board->members()->detach($user->id);
-        $board->members()->attach($user->id, ["role" => $role ]);
-
-        return response()->json([
-            "success" => $board->members->contains($user->id),
-            "role" => $role,
-        ]);
-
-    }
 
     public function unregister(Workboard $board, $user) {
 
