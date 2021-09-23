@@ -149,4 +149,11 @@ class CardController extends Controller
         return response()->json($resp);
 
     }
+
+    function display(Card $card) {
+
+        $this->authorize("view", $card);
+
+        return view("modal.card", compact('card'));
+    }
 }

@@ -38,3 +38,5 @@ Route::post('/l/{listt}/c', [App\Http\Controllers\CardController::class, 'create
 Route::patch('/c/{card}', [App\Http\Controllers\CardController::class, 'update'])->name('card.update');
 Route::patch('/c/{card}/move', [App\Http\Controllers\CardController::class, 'move'])->name('card.move');
 Route::delete('/c/{card}', [App\Http\Controllers\CardController::class, 'destroy'])->name('card.destroy');
+
+Route::get('/c/{card}/display', [App\Http\Controllers\CardController::class, 'display'])->name('card.display');

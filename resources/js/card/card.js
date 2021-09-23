@@ -35,10 +35,28 @@ $( function() {
 
 } );
 
-window.displayCardInfoInModal = function(card) {
-    document.getElementById("card-title").value = card["title"];
-    document.getElementById("card-details").value = card["details"];
 
+const modalSpinner = "<div class=\"spinner-border m-4 text-primary\" role=\"status\">\n" +
+    "                   <span class=\"sr-only\">Loading...</span>\n" +
+    "               </div>";
+
+$(document).on("click", '.kanban-card', function() {
+
+    $('#edit-card-modal .modal-content').html(modalSpinner);
+    axios.get("/c/" + $(this).data("id") + "/display").then(response => {
+        $('#edit-card-modal .modal-content').html(response.data);
+
+        axios.get("/c/" + $(this).data("id")).then(card => {
+            formatDueDateInModal(card.data);
+            $('#edit-card-modal').modal('show');
+        });
+    });
+
+});
+
+
+
+window.formatDueDateInModal = function(card) {
     const dueDate = document.getElementById("card-due-date");
     const doneDate = document.getElementById("card-done-date");
 
@@ -99,25 +117,9 @@ window.createCard = function(listtId) {
         newCard.classList.add("kanban-card");
         newCard.classList.add("kanban-card-gray");
 
-        newCard.dataset.toggle = "modal";
-        newCard.dataset.target = "#edit-card-modal";
-
         newCard.dataset.id = response.data["id"];
         newCard.innerText = response.data["title"];
         newCard.dataset.listtId = response.data["listtId"];
-
-        newCard.addEventListener("click", e => {
-            editCardModal.dataset.cardId = e.currentTarget.dataset.id;
-            editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
-
-            modalSpinner.hidden = false;
-            modalContent.hidden = true;
-            axios.get("/c/" + e.currentTarget.dataset.id ).then(resp => {
-                displayCardInfoInModal(resp.data);
-                modalSpinner.hidden = true;
-                modalContent.hidden = false;
-            });
-        });
 
         cardContainer.appendChild(newCard);
     }).catch(err => {
@@ -164,7 +166,7 @@ window.editCard = function(cardId) {
             listedCard.appendChild(listedCardIcons);
 
             //Update modal info
-            displayCardInfoInModal(response.data);
+            formatDueDateInModal(response.data);
 
         }).catch(err => {
 
