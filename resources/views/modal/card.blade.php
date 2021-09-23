@@ -31,7 +31,7 @@
             <button class="btn btn-outline-primary" data-toggle="modal" data-target="#date-modal" ><i class="bi bi-calendar-plus"></i> Due Date</button>
             <hr>
             <span class="p-1" style="color: #777777; text-align: center">Card Actions</span>
-            <button class="btn btn-outline-primary" data-dismiss="modal" onclick="_deleteCard()" ><i class="bi bi-trash"></i> Delete</button>
+            <button class="btn btn-outline-primary" data-dismiss="modal" onclick="deleteCard({{$card->id}})" ><i class="bi bi-trash"></i> Delete</button>
         </div>
     </div>
 </div>

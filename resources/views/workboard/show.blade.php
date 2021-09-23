@@ -110,11 +110,6 @@
         }
     };
 
-
-    function _deleteCard() {
-        deleteCard(editCardModal.dataset.cardId);
-    }
-
 </script>
 
 <div class="modal fade" id="new-listt-modal" tabindex="-1" role="dialog" aria-labelledby="newListtModalLabel" aria-hidden="true">
