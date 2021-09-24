@@ -62,7 +62,7 @@
     <div class="d-flex align-items-start w-100 px-5 pb-1 listt-sortable" style="overflow-x: auto; @if($board->members->count() > 0) height: calc((100vh - 112px) - (68px + 1.5rem)); @else height: calc((100vh - 80px) - (68px + 1.5rem)); @endif">
         @foreach($board->listts as $listt)
             <div class="d-flex mx-2 listt" data-id="{{$listt->id}}" style="width:275px; height:100%; float: left;">
-                <div class="card py-1" style="cursor: pointer; min-width:275px; background: #f7f7f7;">
+                <div class="card py-1" style="cursor: pointer; min-width:275px; background: #f3f3f3;">
                     <div class="d-flex align-items-baseline justify-content-between">
                         <div class="font-weight-bold ml-3" style="color: #0b2133;">{{ $listt->name }}</div>
                         <div>
@@ -73,7 +73,7 @@
 
                     <div class="kanban-cards sortable py-1" data-listt-id="{{ $listt->id }}" style="overflow-y: auto; overflow-x: hidden; height:100%;">
                     @foreach($listt->cards as $card)
-                        <div class="kanban-card kanban-card-gray" data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" data-toggle="modal" data-target="#edit-card-modal">
+                        <div class="kanban-card " data-id="{{$card->id}}" data-listt-id="{{$listt->id}}" style="border-top: @if($card->color) 8px solid {{$card->color}} @else none @endif ">
                             <div>{{ $card->title }}</div>
 
                             @if($card->details)

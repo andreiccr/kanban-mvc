@@ -31,6 +31,7 @@ class CardController extends Controller
             "details" => $card->details,
             "due_date" => $card->due_date == null ? null : date(DateTimeInterface::ISO8601, strtotime($card->due_date)),
             "done_date" => $card->done_date == null ? null : date(DateTimeInterface::ISO8601, strtotime($card->done_date)),
+            "color" => $card->color,
 
         ]);
     }
@@ -105,8 +106,11 @@ class CardController extends Controller
             "title" => "required|string|max:1000",
             "details" => "nullable|string|max:3500",
             "due_date" => "nullable|date",
-            "marked_as_completed" => "nullable"
+            "marked_as_completed" => "nullable",
+            "color" => "nullable|regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/i"
         ]);
+
+        $card->color = $validated["color"];
 
         if(strtotime($validated['due_date']) >= strtotime("now") || $validated["due_date"] == null || (strtotime($validated['due_date']) < strtotime("now") && $validated["marked_as_completed"] != null)) {
             $card->due_date = $validated["due_date"] == null ? null : date("Y-m-d H:i:s", strtotime($validated["due_date"]));

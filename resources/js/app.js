@@ -20,4 +20,5 @@ require('./listt');
 require('./members');
 require('./card/card');
 require('./card/dates');
+require('./card/colors');
 

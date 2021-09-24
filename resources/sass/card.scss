@@ -2,24 +2,27 @@
     padding: 0.75rem;
     margin: 0.5rem;
     border-radius: 0.25rem;
-
-}
-
-.kanban-card-gray {
-    //border:1px solid #bbb;
-
     box-shadow:0px 1px 2px #aaa;
     background: white;
+
 }
 
-.kanban-card-gray:hover{
+.kanban-card:hover{
     background: #eeeff1;
 }
 
 .kanban-card-blue {
-    box-shadow: 0px 2px 1px #014c797a;
-    background: #3490dc;
-    color: white;
+    border-top: 8px solid #0d83e7;
+}.kanban-card-red {
+    border-top: 8px solid #e70d0d;
+}.kanban-card-green {
+    border-top: 8px solid #2dce0b;
+}.kanban-card-orange {
+    border-top: 8px solid #e7900d;
+}.kanban-card-pink {
+    border-top: 8px solid #ec16a2;
+}.kanban-card-purple {
+    border-top: 8px solid #6f0de7;
 }
 
 .btn-create-card {

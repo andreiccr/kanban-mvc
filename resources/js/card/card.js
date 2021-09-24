@@ -128,6 +128,7 @@ window.editCard = function(cardId) {
     const cardDetails = document.getElementById("card-details").value;
     const cardDueDate = document.getElementById("card-due-date").dataset.storedDate;
     const cardMarkedAsCompleted = document.getElementById("card-due-date").dataset.completed;
+    const cardColor = document.getElementById("card-color").dataset.color;
 
     axios.patch("/c/" + cardId,
         {
@@ -135,6 +136,8 @@ window.editCard = function(cardId) {
             "details" : cardDetails ,
             "due_date" : cardDueDate.length>0 ? cardDueDate : null ,
             "marked_as_completed" : cardMarkedAsCompleted === "false" ? null : "true" ,
+            "color" : cardColor === "null" ? null : cardColor ,
+
         }).then(response => {
 
             //Update card name in the list
@@ -154,6 +157,12 @@ window.editCard = function(cardId) {
                 } else {
                     listedCardIcons.innerHTML += " <div class=\"d-inline-block m-1\"><i class=\"bi bi-calendar\" style=\"color:#4e535e; font-size: medium\"></i><span class=\"p-1\" style=\"font-size: small; color:#1a202c;\">" + shortDateStr + "</span></div>";
                 }
+            }
+
+            if(response.data['color'] !== null) {
+                listedCard.style.borderTop = "8px solid "+ response.data['color'];
+            } else {
+                listedCard.style.borderTop = "none";
             }
 
             listedCard.innerHTML = "";
