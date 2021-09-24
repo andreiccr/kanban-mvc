@@ -11,9 +11,24 @@
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    @foreach($board->user->workboards as $b)
-                        <a class="dropdown-item" href="{{route("workboard.show", ["board" => $b->id])}}">{{$b->name}}</a>
-                    @endforeach
+
+                    @if(Auth::user()->workboards->count() > 0)
+                        <h6 class="dropdown-header">Owned boards</h6>
+                        @foreach(Auth::user()->workboards as $b)
+                            <a class="dropdown-item" href="{{route("workboard.show", ["board" => $b->id])}}">{{$b->name}}</a>
+                        @endforeach
+                    @endif
+
+                    @if(Auth::user()->workboards->count() > 0 && Auth::user()->joinedWorkboards->count() > 0)
+                        <div class="dropdown-divider"></div>
+                    @endif
+
+                    @if(Auth::user()->joinedWorkboards->count() > 0)
+                        <h6 class="dropdown-header">Joined boards</h6>
+                        @foreach(Auth::user()->joinedWorkboards as $b)
+                            <a class="dropdown-item" href="{{route("workboard.show", ["board" => $b->id])}}">{{$b->name}}</a>
+                        @endforeach
+                    @endif
                 </div>
             </div>
 
