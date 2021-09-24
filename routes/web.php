@@ -43,3 +43,5 @@ Route::get('/c/{card}/display', [App\Http\Controllers\CardController::class, 'di
 Route::get('/b/{board}/list', [App\Http\Controllers\ListtController::class, 'new'])->name('listt.new');
 Route::get('/b/{board}/edit', [App\Http\Controllers\WorkboardController::class, 'edit'])->name('workboard.edit');
 Route::get('/b/{board}/delete', [App\Http\Controllers\WorkboardController::class, 'delete'])->name('workboard.delete');
+Route::get('/b/{board}/member/add', [App\Http\Controllers\WorkboardController::class, 'addMemberModal'])->name('workboard.addMemberModal');
+Route::get('/b/{board}/member/{user}', [App\Http\Controllers\WorkboardController::class, 'showMemberModal'])->name('workboard.showMemberModal');

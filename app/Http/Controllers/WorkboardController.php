@@ -177,4 +177,27 @@ class WorkboardController extends Controller
         $this->authorize("delete", $board);
         return view("modal.delete-board", compact('board'));
     }
+
+    function addMemberModal(Workboard $board) {
+
+        $this->authorize("update", $board);
+        return view("modal.add-member", compact('board'));
+    }
+
+    function showMemberModal(Workboard $board, $user) {
+
+        $this->authorize("update", $board);
+
+        try {
+            $user = User::where("email", $user)->firstOrFail();
+        } catch(\Exception $e) {
+            return response()->json(["userNotFound" => true], 404);
+        }
+
+        $email = $user->email;
+        $isOwner = $user->id == $board->user->id;
+        $isSelf = $user->id == Auth::user()->id;
+
+        return view("modal.member", compact('board', 'email', 'isOwner', 'isSelf'));
+    }
 }

@@ -1,6 +1,25 @@
+$(document).on("click", "#add-member-modal-btn", function() {
+    modalSize("small");
+    $('#edit-card-modal .modal-content').html(modalSpinner);
+    axios.get("/b/" + $(this).data("boardId") + "/member/add").then(response => {
+        $('#edit-card-modal .modal-content').html(response.data);
+        $('#edit-card-modal').modal('show');
+    });
+});
+
+$(document).on("click", ".member", function() {
+    modalSize("small");
+    $('#edit-card-modal .modal-content').html(modalSpinner);
+    axios.get("/b/" + $(this).data("boardId") + "/member/" + $(this).data("memberEmail")).then(response => {
+        $('#edit-card-modal .modal-content').html(response.data);
+        $('#edit-card-modal').modal('show');
+    });
+});
+
+
 window.addMember = function(boardId) {
 
-    const modalError = document.querySelector("#add-member-modal .modal-error");
+    const modalError = document.querySelector(".modal-error");
     const userEmail = document.getElementById("member-email").value;
 
     axios.post("/b/" + boardId + "/u/" + userEmail, { "role" : 1 }).then(resp => {
@@ -16,24 +35,6 @@ window.addMember = function(boardId) {
     }).catch(err => {
         modalError.innerText = "An error has occurred. Please try again!"
 
-    });
-}
-
-
-
-window.loadMemberInModal = function(boardId, userId) {
-    const email = document.getElementById("current-member-email");
-    const removeBtn = document.getElementById("remove-member-btn");
-
-    axios.get("/b/" + boardId + "/u/" + userId).then(resp => {
-        email.value = resp.data['email'];
-        removeBtn.innerHTML = "<i class=\"bi bi-dash-lg\"></i> Remove member"
-        removeBtn.removeAttribute("disabled");
-        if(resp.data['isOwner'] === true) {
-            removeBtn.setAttribute("disabled", "true");
-        } else if(resp.data['isYou'] === true) {
-            removeBtn.innerHTML = "<i class=\"bi bi-dash-lg\"></i> Leave board";
-        }
     });
 }
 

@@ -28,7 +28,7 @@
 
 
             <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
-            <button class="btn btn-outline-secondary btn-add-member m-1" data-toggle="modal" data-target="#add-member-modal" style="">
+            <button class="btn btn-outline-secondary btn-add-member m-1" data-board-id="{{$board->id}}" id="add-member-modal-btn" style="">
                 <i class="bi bi-people"></i> Add members
             </button>
 
@@ -36,9 +36,9 @@
     </div>
     <div class="row">
         @if($board->members->count() > 0)
-            <div class="ml-3" onclick="loadMemberInModal({{$board->id}}, {{$board->user->id}})" data-toggle="modal" data-target="#show-member-modal" title="{{$board->user->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($board->user->email,0,2)) }}</div>
+            <div class="ml-3 member" data-board-id="{{$board->id}}" data-member-email="{{$board->user->email}}" title="{{$board->user->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($board->user->email,0,2)) }}</div>
             @foreach($board->members as $member)
-                <div class="ml-3" onclick="loadMemberInModal({{$board->id}}, {{$member->id}})" data-toggle="modal" data-target="#show-member-modal" title="{{$member->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($member->email,0,2)) }}</div>
+                <div class="ml-3 member" data-board-id="{{$board->id}}" data-member-email="{{$member->email}}" title="{{$member->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($member->email,0,2)) }}</div>
             @endforeach
         @endif
     </div>
@@ -91,15 +91,11 @@
 
     </div>
 
-
 <div class="modal fade" id="edit-card-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        </div>
+        <div class="modal-content"></div>
     </div>
 </div>
-
-
 
 <script>
 
@@ -111,46 +107,5 @@
     };
 
 </script>
-
-
-<div class="modal fade" id="add-member-modal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="form-group">
-                    <label for="member-email">Add member to board</label>
-                    <hr class="mt-0 mb-3">
-                    <span class="text-danger modal-error"></span>
-                    <input type="email" class="form-control" id="member-email" name="member-email" placeholder="Email address">
-                </div>
-
-                <button type="button" id="add-member-btn" onclick="addMember({{$board->id}})" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add member</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="show-member-modal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="form-group">
-                    <span class="text-danger modal-error"></span>
-                    <label for="current-member-email">Board Member</label>
-                    <hr class="mt-0 mb-3">
-                    <input type="email" id="current-member-email" value="" class="form-control" readonly>
-                </div>
-
-                <button type="button" id="remove-member-btn" onclick="removeMember({{$board->id}})" class="btn btn-outline-danger w-100 my-1"><i class="bi bi-dash-lg"></i> Remove member</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @endsection
