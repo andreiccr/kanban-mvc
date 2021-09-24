@@ -23,7 +23,7 @@
 
             <button class="btn m-1" data-board-id="{{$board->id}}" id="edit-board-modal-btn" style="font-size: large; color: #0b2133;"><i class="bi bi-pencil-square"></i></button>
             @if($isBoardOwner)
-                <button class="btn m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-trash"></i></button>
+                <button class="btn m-1" data-board-id="{{$board->id}}" id="delete-board-modal-btn" style="font-size: large; color: #0b2133;"><i class="bi bi-trash"></i></button>
             @endif
 
 
@@ -112,22 +112,6 @@
 
 </script>
 
-
-<div class="modal fade" id="delete-workboard-modal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkboardModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <span class="text-danger modal-error"></span>
-                <p>Are you sure you want to delete this board? <span class="text-danger">All lists and cards associated with it will be permanently deleted!</span></p>
-                <button type="button" id="delete-board-btn" onclick="deleteBoard({{ $board->id }})" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="add-member-modal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">

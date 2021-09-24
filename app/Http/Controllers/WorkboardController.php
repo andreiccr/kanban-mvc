@@ -171,4 +171,10 @@ class WorkboardController extends Controller
         $this->authorize("update", $board);
         return view("modal.edit-board", compact('board'));
     }
+
+    function delete(Workboard $board) {
+
+        $this->authorize("delete", $board);
+        return view("modal.delete-board", compact('board'));
+    }
 }

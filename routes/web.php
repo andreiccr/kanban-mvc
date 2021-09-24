@@ -42,3 +42,4 @@ Route::delete('/c/{card}', [App\Http\Controllers\CardController::class, 'destroy
 Route::get('/c/{card}/display', [App\Http\Controllers\CardController::class, 'display'])->name('card.display');
 Route::get('/b/{board}/list', [App\Http\Controllers\ListtController::class, 'new'])->name('listt.new');
 Route::get('/b/{board}/edit', [App\Http\Controllers\WorkboardController::class, 'edit'])->name('workboard.edit');
+Route::get('/b/{board}/delete', [App\Http\Controllers\WorkboardController::class, 'delete'])->name('workboard.delete');

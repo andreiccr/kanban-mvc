@@ -96,4 +96,5 @@ class ListtController extends Controller
     function new(Workboard $board) {
         return view("modal.new-listt", compact('board'));
     }
+
 }

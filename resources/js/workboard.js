@@ -7,6 +7,15 @@ $(document).on("click", "#edit-board-modal-btn", function() {
     });
 });
 
+$(document).on("click", "#delete-board-modal-btn", function() {
+    modalSize("normal");
+    $('#edit-card-modal .modal-content').html(modalSpinner);
+    axios.get("/b/" + $(this).data("boardId") + "/delete").then(response => {
+        $('#edit-card-modal .modal-content').html(response.data);
+        $('#edit-card-modal').modal('show');
+    });
+});
+
 window.createBoard = function() {
     const boardNameInput = document.getElementById("board-name");
     const modalError = document.getElementById("modal-error");
@@ -40,7 +49,7 @@ window.editBoard = function(id) {
 }
 
 window.deleteBoard = function(id) {
-    const modalError = document.getElementById("delete-workboard-modal").getElementsByClassName("modal-error").item(0);
+    const modalError = document.getElementsByClassName("modal-error").item(0);
 
     axios.delete("/b/" + id).then(response => {
         if(response.status === 200) {
