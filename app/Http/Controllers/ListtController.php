@@ -92,4 +92,8 @@ class ListtController extends Controller
     function edit(Listt $listt) {
         return view("listt.edit", compact('listt'));
     }
+
+    function new(Workboard $board) {
+        return view("modal.new-listt", compact('board'));
+    }
 }

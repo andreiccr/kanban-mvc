@@ -84,7 +84,7 @@
         <div class="d-flex mx-1 " style="width:300px">
             <div style="min-width:300px;">
                 <div class="d-flex">
-                    <button class="btn btn-outline-primary w-100" data-toggle="modal" data-target="#new-listt-modal" style="text-align: left"><i class="bi bi-plus-lg"></i> Add list</button>
+                    <button class="btn btn-outline-primary w-100" data-board-id="{{$board->id}}" style="text-align: left" id="new-listt-btn"><i class="bi bi-plus-lg"></i> Add list</button>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@
 
 
 <div class="modal fade" id="edit-card-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
         </div>
     </div>
@@ -111,24 +111,6 @@
     };
 
 </script>
-
-<div class="modal fade" id="new-listt-modal" tabindex="-1" role="dialog" aria-labelledby="newListtModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="form-group">
-                    <span class="text-danger modal-error"></span>
-                    <label for="listt-name">List Name</label>
-                    <input type="text" class="form-control" id="listt-name" name="listt-name" placeholder="List name">
-                </div>
-                <button type="button" id="new-listt-btn" onclick="createNewListt({{ $board->id }})" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add list</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <div class="modal fade" id="edit-workboard-modal" tabindex="-1" role="dialog" aria-labelledby="editWorkboardModalLabel" aria-hidden="true">

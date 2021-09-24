@@ -40,3 +40,4 @@ Route::patch('/c/{card}/move', [App\Http\Controllers\CardController::class, 'mov
 Route::delete('/c/{card}', [App\Http\Controllers\CardController::class, 'destroy'])->name('card.destroy');
 
 Route::get('/c/{card}/display', [App\Http\Controllers\CardController::class, 'display'])->name('card.display');
+Route::get('/b/{board}/list', [App\Http\Controllers\ListtController::class, 'new'])->name('listt.new');

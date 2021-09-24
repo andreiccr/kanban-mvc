@@ -35,13 +35,8 @@ $( function() {
 
 } );
 
-
-const modalSpinner = "<div class=\"spinner-border m-4 text-primary\" role=\"status\">\n" +
-    "                   <span class=\"sr-only\">Loading...</span>\n" +
-    "               </div>";
-
 $(document).on("click", '.kanban-card', function() {
-
+    modalSize("large");
     $('#edit-card-modal .modal-content').html(modalSpinner);
     axios.get("/c/" + $(this).data("id") + "/display").then(response => {
         $('#edit-card-modal .modal-content').html(response.data);
