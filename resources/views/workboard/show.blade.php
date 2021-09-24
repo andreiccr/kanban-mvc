@@ -96,7 +96,7 @@
         @endforeach
 
 
-        <div class="d-flex mx-1 " style="width:300px">
+        <div class="d-flex mx-1 " style="width:300px;">
             <div style="min-width:300px;">
                 <div class="d-flex">
                     <button class="btn btn-outline-primary w-100" data-board-id="{{$board->id}}" style="text-align: left" id="new-listt-btn"><i class="bi bi-plus-lg"></i> Add list</button>
