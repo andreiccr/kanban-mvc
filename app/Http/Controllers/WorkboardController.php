@@ -166,6 +166,11 @@ class WorkboardController extends Controller
         return response("OK", 200);
     }
 
+    public function new() {
+
+        return view("modal.create-board");
+    }
+
     public function edit(Workboard $board) {
 
         $this->authorize("update", $board);

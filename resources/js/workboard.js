@@ -1,3 +1,12 @@
+$(document).on("click", "#create-board-modal-btn", function() {
+    modalSize("normal");
+    $('.modal .modal-content').html(modalSpinner);
+    axios.get("/b/new").then(response => {
+        $('.modal .modal-content').html(response.data);
+        $('.modal').modal('show');
+    });
+});
+
 $(document).on("click", "#edit-board-modal-btn", function() {
     modalSize("normal");
     $('#edit-card-modal .modal-content').html(modalSpinner);
@@ -18,7 +27,7 @@ $(document).on("click", "#delete-board-modal-btn", function() {
 
 window.createBoard = function() {
     const boardNameInput = document.getElementById("board-name");
-    const modalError = document.getElementById("modal-error");
+    const modalError = document.getElementsByClassName("modal-error").item(0);
 
     axios.post("/b/", { name: boardNameInput.value }).then(response => {
         if(response.status === 200) {
