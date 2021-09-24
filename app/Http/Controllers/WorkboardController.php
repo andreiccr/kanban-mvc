@@ -165,4 +165,10 @@ class WorkboardController extends Controller
 
         return response("OK", 200);
     }
+
+    public function edit(Workboard $board) {
+
+        $this->authorize("update", $board);
+        return view("modal.edit-board", compact('board'));
+    }
 }

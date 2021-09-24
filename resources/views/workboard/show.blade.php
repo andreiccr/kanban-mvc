@@ -21,7 +21,7 @@
             <h4 class="m-1" style="font-weight: bold; color: #0b2133; font-size: large; padding: 0.6rem !important;">{{ $board->name }}</h4>
             <div class="vertical-separator-sm" style="border-right: 1px solid #bbb; width:1px; height: 20px"></div>
 
-            <button class="btn m-1" data-toggle="modal" data-target="#edit-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-pencil-square"></i></button>
+            <button class="btn m-1" data-board-id="{{$board->id}}" id="edit-board-modal-btn" style="font-size: large; color: #0b2133;"><i class="bi bi-pencil-square"></i></button>
             @if($isBoardOwner)
                 <button class="btn m-1" data-toggle="modal" data-target="#delete-workboard-modal" style="font-size: large; color: #0b2133;"><i class="bi bi-trash"></i></button>
             @endif
@@ -111,26 +111,6 @@
     };
 
 </script>
-
-
-<div class="modal fade" id="edit-workboard-modal" tabindex="-1" role="dialog" aria-labelledby="editWorkboardModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="form-group">
-                    <span class="text-danger modal-error"></span>
-                    <label for="board-name">Board Name</label>
-                    <input type="text" class="form-control" id="board-name" name="board-name" value="{{ $board->name }}" aria-describedby="board-name-help" placeholder="Enter board's name">
-                    <small id="board-name-help" class="form-text text-muted">Max 100 characters long</small>
-                </div>
-                <button type="button" id="edit-board-btn" onclick="editBoard({{ $board->id }})" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Save</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <div class="modal fade" id="delete-workboard-modal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkboardModalLabel" aria-hidden="true">
