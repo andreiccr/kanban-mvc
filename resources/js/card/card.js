@@ -148,14 +148,14 @@ window.editCard = function(cardId) {
             let listedCardIcons = document.createElement("div");
 
             if(response.data['details'] !== null)
-                listedCardIcons.innerHTML = "<i class=\"bi bi-justify-left m-1\" style=\"color:#4e535e; font-size: medium\"></i>";
+                listedCardIcons.innerHTML = "<i class=\"bi bi-justify-left mr-1\" style=\"color:#111; font-size: small\"></i>";
 
             if(response.data['due_date'] !== null) {
                 const shortDateStr = makeShortDueDateString(response.data['due_date']);
                 if(response.data['done_date'] !== null) {
-                    listedCardIcons.innerHTML += " <div class=\"d-inline-block m-1\"><i class=\"bi bi-calendar-check\" style=\"color:#188c26; font-size: medium\"></i><span class=\"p-1\" style=\"font-size: small; color:#188c26; \">" + shortDateStr + "</span></div>";
+                    listedCardIcons.innerHTML += " <div class=\"d-inline-block mr-1\"><i class=\"bi bi-calendar-check\" style=\"color:#0d0dab; font-size: small\"></i><span class=\"p-1\" style=\"font-size: smaller; color:#0d0dab; \">" + shortDateStr + "</span></div>";
                 } else {
-                    listedCardIcons.innerHTML += " <div class=\"d-inline-block m-1\"><i class=\"bi bi-calendar\" style=\"color:#4e535e; font-size: medium\"></i><span class=\"p-1\" style=\"font-size: small; color:#1a202c;\">" + shortDateStr + "</span></div>";
+                    listedCardIcons.innerHTML += " <div class=\"d-inline-block mr-1\"><i class=\"bi bi-calendar\" style=\"color:#4e535e; font-size: small\"></i><span class=\"p-1\" style=\"font-size: smaller; color:#1a202c;\">" + shortDateStr + "</span></div>";
                 }
             }
 

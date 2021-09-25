@@ -77,12 +77,12 @@
                             <div>{{ $card->title }}</div>
 
                             @if($card->details)
-                                <i class="bi bi-justify-left m-1" style="color:#4e535e; font-size: medium"></i>
+                                <i class="bi bi-justify-left mr-1" style="color:#111; font-size: small"></i>
                             @endif
 
                             @if($card->due_date)
-                                <div class="d-inline-block m-1">
-                                    <i class="bi @if($card->done_date) bi-calendar-check @else bi-calendar @endif" style="@if($card->done_date) color:#188c26; @else color:#4e535e; @endif font-size: medium"></i><span class="card-due p-1" data-card-due="{{ date(DateTimeInterface::ISO8601, strtotime($card->due_date)) }}" style="font-size: small; @if($card->done_date) color:#188c26; @else color:#4e535e; @endif "></span>
+                                <div class="d-inline-block mr-1">
+                                    <i class="bi @if($card->done_date) bi-calendar-check @else bi-calendar @endif" style="@if($card->done_date) color:#0d0dab; @else color:#4e535e; @endif font-size: small"></i><span class="card-due p-1" data-card-due="{{ date(DateTimeInterface::ISO8601, strtotime($card->due_date)) }}" style="font-size: smaller; @if($card->done_date) color:#0d0dab; @else color:#4e535e; @endif "></span>
                                 </div>
 
                             @endif
