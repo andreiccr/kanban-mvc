@@ -51,9 +51,9 @@
     </div>
     <div class="row">
         @if($board->members->count() > 0)
-            <div class="ml-3 member" data-board-id="{{$board->id}}" data-member-email="{{$board->user->email}}" title="{{$board->user->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($board->user->email,0,2)) }}</div>
+            <div class="ml-3 member" data-board-id="{{$board->id}}" data-member-email="{{$board->user->email}}" title="{{$board->user->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: {{$board->user->profile->profile_pic_color}}; color: white; font-weight: bolder; cursor:pointer">{{ $board->user->profile->profile_pic_initials }}</div>
             @foreach($board->members as $member)
-                <div class="ml-3 member" data-board-id="{{$board->id}}" data-member-email="{{$member->email}}" title="{{$member->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: rgb({{rand(70, 100)}}, {{rand(70, 100)}}, {{rand(70, 100)}}); color: white; font-weight: bolder; cursor:pointer">{{ strtoupper(substr($member->email,0,2)) }}</div>
+                <div class="ml-3 member" data-board-id="{{$board->id}}" data-member-email="{{$member->email}}" title="{{$member->email}}" style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; background: {{$member->profile->profile_pic_color}}; color: white; font-weight: bolder; cursor:pointer">{{ $member->profile->profile_pic_initials }}</div>
             @endforeach
         @endif
     </div>
