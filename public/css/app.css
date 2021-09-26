@@ -10081,3 +10081,11 @@ main {
 body {
   background: white;
 }
+
+.navbar {
+  padding: 0.2rem 1rem !important;
+}
+
+#navbarDropdown:after {
+  content: none;
+}
