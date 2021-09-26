@@ -52,7 +52,7 @@
                     <input class="p-2 my-2" id="due-date-input-time" type="time" value="00:00">
                 </div>
                 <button class="btn btn-primary w-100 my-2" onclick="setDueDate({{$card->id}})">Set Due Date</button>
-                <button class="btn btn-secondary w-100 my-2" data-dismiss="modal" onclick="removeDueDate({{$card->id}})">Remove</button>
+                <button class="btn btn-secondary w-100 my-2" onclick="removeDueDate({{$card->id}})">Remove</button>
             </div>
         </div>
     </div>

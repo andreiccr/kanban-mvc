@@ -61,6 +61,8 @@ window.setDueDate = function(cardId) {
 
     editCard(cardId);
 
+    $("#date-modal").modal("hide");
+
 }
 
 window.markAsComplete = function(value, cardId) {
@@ -80,4 +82,6 @@ window.removeDueDate = function(cardId) {
     dueDate.dataset.completed = "false";
 
     editCard(cardId);
+
+    $("#date-modal").modal("hide");
 }
