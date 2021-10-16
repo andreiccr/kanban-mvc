@@ -18,6 +18,16 @@ $( function() {
 
 } );
 
+$(document).on("click", "#new-listt-btn", function() {
+    modalSize("normal");
+    $('#edit-card-modal .modal-content').html(modalSpinner);
+    axios.get("/b/" + $(this).data("boardId") + "/list").then(response => {
+        $('#edit-card-modal .modal-content').html(response.data);
+        $('#edit-card-modal').modal('show');
+    });
+});
+
+
 window.deleteListt = function(listtId) {
     axios.delete("/l/" + listtId).then(response => {
         if(response.status === 200) {
@@ -36,7 +46,7 @@ window.reorderListt = function(listtId, newPosition) {
 
 window.createNewListt = function(boardId) {
     const listtNameInput = document.getElementById("listt-name");
-    const modalError = document.getElementById("new-listt-modal").getElementsByClassName("modal-error").item(0);
+    const modalError = document.getElementsByClassName("modal-error").item(0);
 
     axios.post("/b/" + boardId + "/l/" , { name: listtNameInput.value }).then(response => {
         if(response.status === 200) {

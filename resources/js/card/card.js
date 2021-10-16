@@ -35,10 +35,23 @@ $( function() {
 
 } );
 
-window.displayCardInfoInModal = function(card) {
-    document.getElementById("card-title").value = card["title"];
-    document.getElementById("card-details").value = card["details"];
+$(document).on("click", '.kanban-card', function() {
+    modalSize("large");
+    $('#edit-card-modal .modal-content').html(modalSpinner);
+    axios.get("/c/" + $(this).data("id") + "/display").then(response => {
+        $('#edit-card-modal .modal-content').html(response.data);
 
+        axios.get("/c/" + $(this).data("id")).then(card => {
+            formatDueDateInModal(card.data);
+            $('#edit-card-modal').modal('show');
+        });
+    });
+
+});
+
+
+
+window.formatDueDateInModal = function(card) {
     const dueDate = document.getElementById("card-due-date");
     const doneDate = document.getElementById("card-done-date");
 
@@ -99,25 +112,9 @@ window.createCard = function(listtId) {
         newCard.classList.add("kanban-card");
         newCard.classList.add("kanban-card-gray");
 
-        newCard.dataset.toggle = "modal";
-        newCard.dataset.target = "#edit-card-modal";
-
         newCard.dataset.id = response.data["id"];
         newCard.innerText = response.data["title"];
         newCard.dataset.listtId = response.data["listtId"];
-
-        newCard.addEventListener("click", e => {
-            editCardModal.dataset.cardId = e.currentTarget.dataset.id;
-            editCardModal.dataset.listtId = e.currentTarget.dataset.listtId;
-
-            modalSpinner.hidden = false;
-            modalContent.hidden = true;
-            axios.get("/c/" + e.currentTarget.dataset.id ).then(resp => {
-                displayCardInfoInModal(resp.data);
-                modalSpinner.hidden = true;
-                modalContent.hidden = false;
-            });
-        });
 
         cardContainer.appendChild(newCard);
     }).catch(err => {
@@ -131,6 +128,7 @@ window.editCard = function(cardId) {
     const cardDetails = document.getElementById("card-details").value;
     const cardDueDate = document.getElementById("card-due-date").dataset.storedDate;
     const cardMarkedAsCompleted = document.getElementById("card-due-date").dataset.completed;
+    const cardColor = document.getElementById("card-color").dataset.color;
 
     axios.patch("/c/" + cardId,
         {
@@ -138,6 +136,8 @@ window.editCard = function(cardId) {
             "details" : cardDetails ,
             "due_date" : cardDueDate.length>0 ? cardDueDate : null ,
             "marked_as_completed" : cardMarkedAsCompleted === "false" ? null : "true" ,
+            "color" : cardColor === "null" ? null : cardColor ,
+
         }).then(response => {
 
             //Update card name in the list
@@ -148,15 +148,21 @@ window.editCard = function(cardId) {
             let listedCardIcons = document.createElement("div");
 
             if(response.data['details'] !== null)
-                listedCardIcons.innerHTML = "<i class=\"bi bi-justify-left m-1\" style=\"color:#4e535e; font-size: medium\"></i>";
+                listedCardIcons.innerHTML = "<i class=\"bi bi-justify-left mr-1\" style=\"color:#111; font-size: small\"></i>";
 
             if(response.data['due_date'] !== null) {
                 const shortDateStr = makeShortDueDateString(response.data['due_date']);
                 if(response.data['done_date'] !== null) {
-                    listedCardIcons.innerHTML += " <div class=\"d-inline-block m-1\"><i class=\"bi bi-calendar-check\" style=\"color:#188c26; font-size: medium\"></i><span class=\"p-1\" style=\"font-size: small; color:#188c26; \">" + shortDateStr + "</span></div>";
+                    listedCardIcons.innerHTML += " <div class=\"d-inline-block mr-1\"><i class=\"bi bi-calendar-check\" style=\"color:#0d0dab; font-size: small\"></i><span class=\"p-1\" style=\"font-size: smaller; color:#0d0dab; \">" + shortDateStr + "</span></div>";
                 } else {
-                    listedCardIcons.innerHTML += " <div class=\"d-inline-block m-1\"><i class=\"bi bi-calendar\" style=\"color:#4e535e; font-size: medium\"></i><span class=\"p-1\" style=\"font-size: small; color:#1a202c;\">" + shortDateStr + "</span></div>";
+                    listedCardIcons.innerHTML += " <div class=\"d-inline-block mr-1\"><i class=\"bi bi-calendar\" style=\"color:#4e535e; font-size: small\"></i><span class=\"p-1\" style=\"font-size: smaller; color:#1a202c;\">" + shortDateStr + "</span></div>";
                 }
+            }
+
+            if(response.data['color'] !== null) {
+                listedCard.style.borderTop = "8px solid "+ response.data['color'];
+            } else {
+                listedCard.style.borderTop = "none";
             }
 
             listedCard.innerHTML = "";
@@ -164,7 +170,7 @@ window.editCard = function(cardId) {
             listedCard.appendChild(listedCardIcons);
 
             //Update modal info
-            displayCardInfoInModal(response.data);
+            formatDueDateInModal(response.data);
 
         }).catch(err => {
 

@@ -56,14 +56,16 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->email }}
+                                    <div style="display:flex; justify-content: center; align-items: center; width: 32px; height:32px; border-radius:0.25rem; color: {{Auth::user()->profile->profile_pic_color}}; background-color: white; font-weight: bolder;">{{ Auth::user()->profile->profile_pic_initials }}</div>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <h6 class="dropdown-header">{{Auth::user()->email}}</h6>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        <i class="bi bi-box-arrow-right"></i> {{ __('Logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -77,7 +79,7 @@
             </div>
         </nav>
 
-        <main class="pt-4">
+        <main class="pt-1">
             @yield('content')
         </main>
     </div>

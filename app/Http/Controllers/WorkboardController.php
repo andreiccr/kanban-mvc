@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Workboard;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -27,6 +28,72 @@ class WorkboardController extends Controller
         return view('workboard.index');
     }
 
+    public function member(Workboard $board, User $user) {
+        if($board->members->contains($user->id) || $board->user->id == $user->id) {
+
+            $role = $board->user->id == $user->id ? 2 : $board->members->find($user->id)->pivot->role;
+            return response()->json([
+                "email" => $user->email,
+                "role" => $role,
+                "isOwner" => $board->user->id == $user->id,
+                "isYou" => $user->id == Auth::user()->id
+            ]);
+        }
+        else {
+            return response()->json([
+                "error" => "The user is not a board member",
+            ], 404);
+        }
+    }
+
+    public function register(Request $request, Workboard $board, $user) {
+
+        $this->authorize("update", $board);
+
+        $validated = $request->validate([
+            "role" => "required|integer|numeric|min:1"
+        ]);
+
+        try {
+            $user = User::where("email", $user)->firstOrFail();
+        } catch(\Exception $e) {
+            return response()->json(["userNotFound" => true], 404);
+        }
+
+        $role = min($validated["role"] , 2);
+        $alreadyRegistered = false;
+
+        if($board->members->contains($user->id) == false && $board->user != $user) {
+            $board->members()->attach($user->id, ["role" => $role]);
+        } else {
+            $alreadyRegistered = true;
+        }
+
+        return response()->json([
+            "success" => true,
+            "alreadyRegistered" => $alreadyRegistered,
+            "role" => $role,
+        ]);
+    }
+
+
+    public function unregister(Workboard $board, $user) {
+
+        $this->authorize("update", $board);
+
+        try {
+            $user = User::where("email", $user)->firstOrFail();
+        } catch(\Exception $e) {
+            return response()->json(["userNotFound" => true], 404);
+        }
+
+        $board->members()->detach($user->id);
+
+        return response()->json([
+            "success" => true,
+        ]);
+    }
+
     /**
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -35,7 +102,10 @@ class WorkboardController extends Controller
     {
         $this->authorize("view", $board);
 
-        return view('workboard.show' , compact('board'));
+        $isBoardOwner = $board->user->id == \auth()->user()->id;
+        $isBoardMember = $board->members->contains(auth()->user()->id);
+
+        return view('workboard.show' , compact('board', 'isBoardOwner', 'isBoardOwner'));
     }
 
 
@@ -94,5 +164,45 @@ class WorkboardController extends Controller
         }
 
         return response("OK", 200);
+    }
+
+    public function new() {
+
+        return view("modal.create-board");
+    }
+
+    public function edit(Workboard $board) {
+
+        $this->authorize("update", $board);
+        return view("modal.edit-board", compact('board'));
+    }
+
+    function delete(Workboard $board) {
+
+        $this->authorize("delete", $board);
+        return view("modal.delete-board", compact('board'));
+    }
+
+    function addMemberModal(Workboard $board) {
+
+        $this->authorize("update", $board);
+        return view("modal.add-member", compact('board'));
+    }
+
+    function showMemberModal(Workboard $board, $user) {
+
+        $this->authorize("update", $board);
+
+        try {
+            $user = User::where("email", $user)->firstOrFail();
+        } catch(\Exception $e) {
+            return response()->json(["userNotFound" => true], 404);
+        }
+
+        $email = $user->email;
+        $isOwner = $user->id == $board->user->id;
+        $isSelf = $user->id == Auth::user()->id;
+
+        return view("modal.member", compact('board', 'email', 'isOwner', 'isSelf'));
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Workboard;
 use DateTime;
 use DateTimeInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {
@@ -22,17 +23,25 @@ class CardController extends Controller
 
     function get(Card $card) {
 
+        $this->authorize("view", $card);
+
         return response()->json([
             "id" => $card->id,
             "title" => $card->title,
             "details" => $card->details,
             "due_date" => $card->due_date == null ? null : date(DateTimeInterface::ISO8601, strtotime($card->due_date)),
             "done_date" => $card->done_date == null ? null : date(DateTimeInterface::ISO8601, strtotime($card->done_date)),
+            "color" => $card->color,
 
         ]);
     }
 
     function create(Listt $listt) {
+
+        // Allow board owner and board members
+        if(Auth::user()->id != $listt->workboard->user->id &&
+            $listt->workboard->members->contains(Auth::user()->id)==false )
+            return response(null, 403);
 
         $card = $listt->cards()->create([
             "title" => "New card",
@@ -44,6 +53,9 @@ class CardController extends Controller
     }
 
     function move(Request $request, Card $card) {
+
+        $this->authorize("update", $card);
+
         $validated = $request->validate([
             "position" => "required|integer|numeric",
             "listtId" => "required|integer|numeric"
@@ -87,12 +99,18 @@ class CardController extends Controller
     }
 
     function update(Request $request, Card $card) {
+
+        $this->authorize("update", $card);
+
         $validated = $request->validate([
             "title" => "required|string|max:1000",
             "details" => "nullable|string|max:3500",
             "due_date" => "nullable|date",
-            "marked_as_completed" => "nullable"
+            "marked_as_completed" => "nullable",
+            "color" => "nullable|regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/i"
         ]);
+
+        $card->color = $validated["color"];
 
         if(strtotime($validated['due_date']) >= strtotime("now") || $validated["due_date"] == null || (strtotime($validated['due_date']) < strtotime("now") && $validated["marked_as_completed"] != null)) {
             $card->due_date = $validated["due_date"] == null ? null : date("Y-m-d H:i:s", strtotime($validated["due_date"]));
@@ -119,6 +137,8 @@ class CardController extends Controller
 
     function destroy(Card $card) {
 
+        $this->authorize("delete", $card);
+
         $resp = [
             "id" => $card->id,
             "title" => $card->title,
@@ -132,5 +152,12 @@ class CardController extends Controller
 
         return response()->json($resp);
 
+    }
+
+    function display(Card $card) {
+
+        $this->authorize("view", $card);
+
+        return view("modal.card", compact('card'));
     }
 }

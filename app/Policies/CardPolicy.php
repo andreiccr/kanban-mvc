@@ -2,11 +2,13 @@
 
 namespace App\Policies;
 
+use App\Models\Card;
+use App\Models\Listt;
 use App\Models\User;
 use App\Models\Workboard;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class WorkboardPolicy
+class CardPolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +27,14 @@ class WorkboardPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workboard  $workboard
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Workboard $workboard)
+    public function view(User $user, Card $card)
     {
-        return $user->id == $workboard->user->id || $workboard->members->contains($user->id);
+        // Allow board owner and board members
+        return $user->id == $card->listt->workboard->user->id ||
+            ($card->listt->workboard->members->contains($user->id) );
     }
 
     /**
@@ -41,42 +45,45 @@ class WorkboardPolicy
      */
     public function create(User $user)
     {
-        //
+
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workboard  $workboard
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Workboard $workboard)
+    public function update(User $user, Card $card)
     {
-        return $user->id == $workboard->user->id ||
-            ($workboard->members->contains($user->id) );
+        // Allow board owner and board members
+        return $user->id == $card->listt->workboard->user->id ||
+            ($card->listt->workboard->members->contains($user->id) );
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workboard  $workboard
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Workboard $workboard)
+    public function delete(User $user, Card $card)
     {
-        return $user->id == $workboard->user->id;
+        // Allow board owner and board members
+        return $user->id == $card->listt->workboard->user->id ||
+            ($card->listt->workboard->members->contains($user->id) );
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workboard  $workboard
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Workboard $workboard)
+    public function restore(User $user, Card $card)
     {
         //
     }
@@ -85,10 +92,10 @@ class WorkboardPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workboard  $workboard
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Workboard $workboard)
+    public function forceDelete(User $user, Card $card)
     {
         //
     }

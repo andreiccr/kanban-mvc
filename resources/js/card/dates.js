@@ -42,7 +42,7 @@ window.makeShortDueDateString = function(d) {
     return dateStr;
 }
 
-window.setDueDate = function() {
+window.setDueDate = function(cardId) {
 
     if(validateDateTimeInput() === false) {
         return;
@@ -59,11 +59,13 @@ window.setDueDate = function() {
     dueDate.dataset.storedDate = dateObj.toUTCString();
     dueDate.dataset.completed = "false";
 
-    _editCard();
+    editCard(cardId);
+
+    $("#date-modal").modal("hide");
 
 }
 
-window.markAsComplete = function(value) {
+window.markAsComplete = function(value, cardId) {
     if(value === true) {
         document.getElementById("card-due-date").dataset.completed = "true";
     }
@@ -71,13 +73,15 @@ window.markAsComplete = function(value) {
         document.getElementById("card-due-date").dataset.completed = "false";
     }
 
-    _editCard();
+    editCard(cardId);
 }
 
-window.removeDueDate = function() {
+window.removeDueDate = function(cardId) {
     const dueDate = document.getElementById("card-due-date");
     dueDate.dataset.storedDate = "";
     dueDate.dataset.completed = "false";
 
-    _editCard();
+    editCard(cardId);
+
+    $("#date-modal").modal("hide");
 }

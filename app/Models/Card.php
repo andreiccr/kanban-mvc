@@ -25,4 +25,5 @@ class Card extends Model
     function listt() {
         return $this->belongsTo(Listt::class);
     }
+
 }

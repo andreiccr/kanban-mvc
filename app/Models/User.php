@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,11 +50,24 @@ class User extends Authenticatable
             $user->workboards()->create([
                 "name" => $user->email . "'s workboard"
             ]);
+
+            $user->profile()->create([
+                "profile_pic_color" => ProfileController::generateRandomColor(),
+                "profile_pic_initials" => strtoupper(substr($user->email,0,2))
+            ]);
         });
 
     }
 
     function workboards() {
         return $this->hasMany(Workboard::class);
+    }
+
+    function joinedWorkboards() {
+        return $this->belongsToMany(Workboard::class, 'users_workboards');
+    }
+
+    function profile() {
+        return $this->hasOne(Profile::class);
     }
 }
