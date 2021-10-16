@@ -29,7 +29,7 @@ window.createBoard = function() {
     const boardNameInput = document.getElementById("board-name");
     const modalError = document.getElementsByClassName("modal-error").item(0);
 
-    axios.post("/b/", { name: boardNameInput.value }).then(response => {
+    axios.post("/b", { name: boardNameInput.value }).then(response => {
         if(response.status === 200) {
             location.reload();
         } else if(response.status === 302)

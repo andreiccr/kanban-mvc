@@ -10,7 +10,7 @@ $(document).on("click", "#add-member-modal-btn", function() {
 $(document).on("click", ".member", function() {
     modalSize("small");
     $('#edit-card-modal .modal-content').html(modalSpinner);
-    axios.get("/b/" + $(this).data("boardId") + "/member/" + $(this).data("memberEmail")).then(response => {
+    axios.get("/b/" + $(this).data("boardId") + "/member" + $(this).data("memberEmail")).then(response => {
         $('#edit-card-modal .modal-content').html(response.data);
         $('#edit-card-modal').modal('show');
     });

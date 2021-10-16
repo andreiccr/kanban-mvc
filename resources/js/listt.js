@@ -48,7 +48,7 @@ window.createNewListt = function(boardId) {
     const listtNameInput = document.getElementById("listt-name");
     const modalError = document.getElementsByClassName("modal-error").item(0);
 
-    axios.post("/b/" + boardId + "/l/" , { name: listtNameInput.value }).then(response => {
+    axios.post("/b/" + boardId + "/l" , { name: listtNameInput.value }).then(response => {
         if(response.status === 200) {
             location.reload();
         } else if(response.status === 302)
