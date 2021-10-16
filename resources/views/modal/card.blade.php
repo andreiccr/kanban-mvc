@@ -5,7 +5,7 @@
 
     <div class="form-group">
         <span class="text-danger modal-error"></span>
-        <label for="card-title" style="font-weight: 300; font-size: small; color: #777; margin-left: 0.25rem; margin-bottom: 0 !important;">Card Title</label>
+        <label for="card-title" style="font-weight: 300; font-size: small; color: #777; margin-left: 0.25rem; margin-bottom: 0 !important;"><i class="bi bi-card-heading"></i> Card Title</label>
         <input type="text" value="{{$card->title}}" placeholder="Card Title" class="form-control p-1 mb-2" onchange="editCard({{$card->id}})" id="card-title" name="card-title" style="font-size: x-large; border: 0;">
 
         <div id="card-color" class="@if($card->color == null) d-none @endif" data-color="{{$card->color}}" style="width:100px; height:30px; margin-left: 0.25rem; margin-bottom:0.5rem; border-radius:0.25rem; background: {{$card->color ?? "none"}}"></div>
@@ -30,11 +30,11 @@
         </div>
         <div class="col-lg-3 d-flex flex-column">
             <span class="p-1" style="color: #777777; text-align: center">Settings</span>
-            <button class="btn btn-outline-primary my-1" data-toggle="modal" data-target="#date-modal" ><i class="bi bi-calendar-plus"></i> Due Date</button>
-            <button class="btn btn-outline-primary my-1" data-toggle="modal" data-target=".color-modal" ><i class="bi bi-palette"></i> Color</button>
+            <button class="btn btn-outline-dark my-1" data-toggle="modal" data-target="#date-modal" ><i class="bi bi-calendar-plus"></i> Due Date</button>
+            <button class="btn btn-outline-dark my-1" data-toggle="modal" data-target=".color-modal" ><i class="bi bi-palette"></i> Color</button>
             <hr>
             <span class="p-1" style="color: #777777; text-align: center">Card Actions</span>
-            <button class="btn btn-outline-primary" data-dismiss="modal" onclick="deleteCard({{$card->id}})" ><i class="bi bi-trash"></i> Delete</button>
+            <button class="btn btn-outline-dark" data-dismiss="modal" onclick="deleteCard({{$card->id}})" ><i class="bi bi-trash"></i> Delete</button>
         </div>
     </div>
 </div>
